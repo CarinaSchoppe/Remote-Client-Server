@@ -1,6 +1,6 @@
 load: "STARTUP"
 name: "KotlinServerClientMC"
-main: "me.carina-sophie.KotlinServerMC"
+main: "me.carinasophie.KotlinServerMC"
 apiVersion: 1.18
 version: "1.0.0"
 authors: [ "Carina-Sophie Schoppe" ]

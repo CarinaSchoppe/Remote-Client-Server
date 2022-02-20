@@ -8,6 +8,6 @@
  * requires the express written consent of Carina Sophie Schoppe.
  */
 
-package me.`carina-sophie`.util
+package me.carinasophie.util
 
 class FileHandling(val fileName: String)

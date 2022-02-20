@@ -8,7 +8,7 @@
  * requires the express written consent of Carina Sophie Schoppe.
  */
 
-package me.`carina-sophie`
+package me.carinasophie
 
 import org.bukkit.ChatColor
 import org.bukkit.plugin.java.JavaPlugin

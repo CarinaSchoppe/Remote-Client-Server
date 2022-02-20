@@ -58,5 +58,5 @@ tasks.withType<KotlinCompile> {
 
 
 application {
-    mainClass.set("me.carina-sophie.KotlinServerMCKt")
+    mainClass.set("me.carinasophie.KotlinServerMCKt")
 }
