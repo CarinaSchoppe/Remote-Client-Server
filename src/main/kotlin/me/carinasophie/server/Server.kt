@@ -1,7 +1,7 @@
 /*
  * Copyright Notice for KotlinServerClientMinecraft
  * Copyright (c) at Carina Sophie Schoppe 2022
- * File created on 20.02.22, 15:38 by Carina The Latest changes made by Carina on 20.02.22, 15:38.
+ * File created on 20.02.22, 18:39 by Carina The Latest changes made by Carina on 20.02.22, 18:39.
  *  All contents of "Server.kt" are protected by copyright. The copyright law, unless expressly indicated otherwise, is
  * at Carina Sophie Schoppe. All rights reserved
  * Any type of duplication, distribution, rental, sale, award,
@@ -63,8 +63,11 @@ class Server(port: Int) {
                 val packet = Packet.fromJson(input)
                 if (Minecraft.debug) println("${ChatColor.translateAlternateColorCodes('&', "&aClient sent: $input")}")
                 if (!client.activated) {
-                    if (packet.packetType == PacketType.LOGIN && packet.data.get("login").equals(loginCode)) client.activated = true
-                    else {
+                    if (packet.packetType == PacketType.LOGIN && packet.data.get("login").equals(loginCode)) {
+                        client.activated = true
+                        client.name = packet.data.get("name").asString
+                        println("${ChatColor.translateAlternateColorCodes('&', "&aClient activated: ${client.name}")}")
+                    } else {
                         var json = JsonObject()
                         json.addProperty("error", "Invalid login")
                         client.writer.println(Packet(PacketType.LOGIN, json).createJsonPacket())
@@ -79,10 +82,5 @@ class Server(port: Int) {
                 }
             }
         }.start()
-    }
-
-
-    fun start() {
-        println("Server started")
     }
 }
