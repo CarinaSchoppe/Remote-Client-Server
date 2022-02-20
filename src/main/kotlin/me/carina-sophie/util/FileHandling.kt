@@ -10,4 +10,4 @@
 
 package me.`carina-sophie`.util
 
-class FileHandling
+class FileHandling(val fileName: String)

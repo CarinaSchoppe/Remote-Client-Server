@@ -19,11 +19,13 @@ class KotlinServerMC : JavaPlugin() {
     }
 
     override fun onEnable() {
+        instance = this
+        println("${ChatColor.translateAlternateColorCodes('&', "&c&lKotlinServerMC &7>> &c&lEnabled")}")
     }
 
-
+    lateinit var instance: KotlinServerMC
 }
 
 fun main() {
-    println("Test")
+
 }

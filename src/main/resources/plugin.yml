@@ -1,0 +1,14 @@
+load: "STARTUP"
+name: "KotlinServerClientMC"
+main: "me.carina-sophie.KotlinServerMC"
+apiVersion: 1.18
+version: "1.0.0"
+authors: [ "Carina-Sophie Schoppe" ]
+description: "A Kotlin remote server GUI"
+commands:
+  test:
+    description: "Test command"
+    permission: "test.command"
+    usage: "just run the command!"
+    default: "test"
+    aliases: [ "t" ]
