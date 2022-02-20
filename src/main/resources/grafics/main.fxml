@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+  ~ Copyright Notice for KotlinServerClientMinecraft
+  ~ Copyright (c) at Carina Sophie Schoppe 2022
+  ~ File created on 20.02.22, 13:21 by Carina The Latest changes made by Carina on 20.02.22, 13:21 All contents of "main.fxml" are protected by copyright. The copyright law, unless expressly indicated otherwise, is
+  ~ at Carina Sophie Schoppe. All rights reserved
+  ~ Any type of duplication, distribution, rental, sale, award,
+  ~ Public accessibility or other use
+  ~ requires the express written consent of Carina Sophie Schoppe.
+  -->
+
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.*?>
+<AnchorPane xmlns:fx="http://javafx.com/fxml/1" fx:id="pane" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/17" fx:controller="grafics.Main">
+    <children>
+        <ImageView cache="true" fitHeight="400.0" fitWidth="600.0" pickOnBounds="true">
+            <image>
+                <Image url="@../images/background.jpg"/>
+            </image>
+        </ImageView>
+        <TextArea editable="false" layoutX="207.0" layoutY="67.0" prefHeight="307.0" prefWidth="379.0" promptText="console output">
+            <font>
+                <Font name="Berlin Sans FB" size="14.0"/>
+            </font>
+        </TextArea>
+        <TextField fx:id="command" layoutX="12.0" layoutY="146.0" prefHeight="53.0" prefWidth="190.0" promptText="command">
+            <font>
+                <Font name="Berlin Sans FB" size="12.0"/>
+            </font>
+        </TextField>
+        <Button fx:id="sendButton" layoutX="77.0" layoutY="221.0" mnemonicParsing="false" onAction="#onSend" text="send">
+            <font>
+                <Font name="Berlin Sans FB" size="18.0"/>
+            </font>
+        </Button>
+        <Text fx:id="headText" layoutX="145.0" layoutY="45.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Carinas Remote-Console" wrappingWidth="310.66668701171875">
+            <font>
+                <Font name="Berlin Sans FB" size="28.0"/>
+            </font>
+        </Text>
+        <Button fx:id="logoutButton" layoutX="534.0" layoutY="14.0" mnemonicParsing="false" onAction="#onLogout" text="Logout">
+            <font>
+                <Font name="Berlin Sans FB" size="14.0"/>
+            </font>
+        </Button>
+        <Button fx:id="playerMenuButton" layoutX="14.0" layoutY="14.0" mnemonicParsing="false" onAction="#onMenu" text="Player-Menu">
+            <font>
+                <Font name="Berlin Sans FB" size="14.0"/>
+            </font>
+        </Button>
+    </children>
+</AnchorPane>

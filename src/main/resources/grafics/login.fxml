@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.*?>
+<AnchorPane xmlns:fx="http://javafx.com/fxml/1" fx:id="pane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="263.0" prefWidth="387.0" xmlns="http://javafx.com/javafx/17">
+    <children>
+        <ImageView fitHeight="263.0" fitWidth="394.0" pickOnBounds="true">
+            <image>
+                <Image url="@../images/background.jpg"/>
+            </image>
+        </ImageView>
+        <Text layoutX="54.0" layoutY="61.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Users Remote-Console Login">
+            <font>
+                <Font name="Berlin Sans FB" size="24.0"/>
+            </font>
+        </Text>
+        <TextField fx:id="ip" layoutX="75.0" layoutY="85.0" promptText="IP">
+            <font>
+                <Font name="Berlin Sans FB" size="14.0"/>
+            </font>
+        </TextField>
+        <PasswordField fx:id="password" layoutX="75.0" layoutY="167.0" prefHeight="15.0" prefWidth="166.0" promptText="password">
+            <font>
+                <Font size="14.0"/>
+            </font>
+        </PasswordField>
+        <TextField fx:id="username" layoutX="75.0" layoutY="215.0" promptText="username">
+            <font>
+                <Font name="Berlin Sans FB" size="14.0"/>
+            </font>
+        </TextField>
+        <Button fx:id="loginButton" layoutX="286.0" layoutY="125.0" mnemonicParsing="false" onAction="#onLogin" prefHeight="54.0" prefWidth="69.0" text="Login">
+            <font>
+                <Font name="Berlin Sans FB" size="16.0"/>
+            </font>
+        </Button>
+        <TextField fx:id="port" layoutX="75.0" layoutY="127.0" promptText="Port">
+            <font>
+                <Font name="Berlin Sans FB" size="14.0"/>
+            </font>
+        </TextField>
+    </children>
+</AnchorPane>

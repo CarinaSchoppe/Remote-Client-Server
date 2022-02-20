@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.*?>
+<AnchorPane xmlns:fx="http://javafx.com/fxml/1" fx:id="pane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/17">
+    <children>
+        <ImageView fitHeight="400.0" fitWidth="600.0" pickOnBounds="true">
+            <image>
+                <Image url="@../images/background.jpg"/>
+            </image>
+        </ImageView>
+        <Text fx:id="headText" layoutX="73.0" layoutY="68.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Carinas Remote-Console Player Management">
+            <font>
+                <Font name="Berlin Sans FB" size="24.0"/>
+            </font>
+        </Text>
+        <TableView fx:id="table" layoutX="169.0" layoutY="106.0" prefHeight="259.0" prefWidth="416.0">
+            <columns>
+                <TableColumn fx:id="username" prefWidth="154.00003051757812" text="Username"/>
+                <TableColumn fx:id="coordinates" prefWidth="118.0" text="Coordinates"/>
+                <TableColumn fx:id="world" prefWidth="142.66668701171875" text="World"/>
+            </columns>
+        </TableView>
+        <TextField fx:id="reason" layoutX="15.0" layoutY="200.0" prefHeight="41.0" prefWidth="141.0" promptText="reason">
+            <font>
+                <Font name="Berlin Sans FB" size="12.0"/>
+            </font>
+        </TextField>
+        <Button fx:id="sendButton" layoutX="47.0" layoutY="272.0" mnemonicParsing="false" onAction="#onSend" prefHeight="41.0" prefWidth="63.0" text="send">
+            <font>
+                <Font name="Berlin Sans FB" size="16.0"/>
+            </font>
+        </Button>
+        <ChoiceBox fx:id="command" layoutX="11.0" layoutY="127.0" prefWidth="150.0"/>
+        <Button fx:id="logoutButton" layoutX="527.0" layoutY="13.0" mnemonicParsing="false" onAction="#onLogout" text="Logout">
+            <font>
+                <Font name="Berlin Sans FB" size="14.0"/>
+            </font>
+        </Button>
+        <Button fx:id="consoleButton" layoutX="14.0" layoutY="13.0" mnemonicParsing="false" onAction="#onConsole" text="Console">
+            <font>
+                <Font name="Berlin Sans FB" size="14.0"/>
+            </font>
+        </Button>
+    </children>
+</AnchorPane>
