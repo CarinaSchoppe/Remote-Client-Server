@@ -1,7 +1,8 @@
 /*
  * Copyright Notice for KotlinServerClientMinecraft
  * Copyright (c) at Carina Sophie Schoppe 2022
- * File created on 20.02.22, 12:27 by Carina The Latest changes made by Carina on 20.02.22, 12:24 All contents of "KotlinServerMC.kt" are protected by copyright. The copyright law, unless expressly indicated otherwise, is
+ * File created on 20.02.22, 15:38 by Carina The Latest changes made by Carina on 20.02.22, 14:29.
+ *  All contents of "KotlinServerMC.kt" are protected by copyright. The copyright law, unless expressly indicated otherwise, is
  * at Carina Sophie Schoppe. All rights reserved
  * Any type of duplication, distribution, rental, sale, award,
  * Public accessibility or other use
@@ -10,22 +11,15 @@
 
 package me.carinasophie
 
-import org.bukkit.ChatColor
-import org.bukkit.plugin.java.JavaPlugin
+import me.carinasophie.util.grafics.Login
 
-class KotlinServerMC : JavaPlugin() {
-    override fun onDisable() {
-        println("${ChatColor.translateAlternateColorCodes('&', "&c&lKotlinServerMC &7>> &c&lDisabled")}")
+class KotlinServerMC {
+    init {
+        Login().create()
     }
-
-    override fun onEnable() {
-        instance = this
-        println("${ChatColor.translateAlternateColorCodes('&', "&c&lKotlinServerMC &7>> &c&lEnabled")}")
-    }
-
-    lateinit var instance: KotlinServerMC
 }
 
 fun main() {
-
+//Create a new instance of the plugin
+    KotlinServerMC()
 }

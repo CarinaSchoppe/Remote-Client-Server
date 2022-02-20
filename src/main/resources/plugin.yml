@@ -1,6 +1,6 @@
 load: "STARTUP"
 name: "KotlinServerClientMC"
-main: "me.carinasophie.KotlinServerMC"
+main: "me.carinasophie.Minecraft"
 apiVersion: 1.18
 version: "1.0.0"
 authors: [ "Carina-Sophie Schoppe" ]

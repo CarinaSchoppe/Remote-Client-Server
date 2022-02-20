@@ -1,28 +1,41 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<!--
+  ~ Copyright Notice for KotlinServerClientMinecraft
+  ~ Copyright (c) at Carina Sophie Schoppe 2022
+  ~ File created on 20.02.22, 15:38 by Carina The Latest changes made by Carina on 20.02.22, 15:38.
+  ~  All contents of "selection.fxml" are protected by copyright. The copyright law, unless expressly indicated otherwise, is
+  ~ at Carina Sophie Schoppe. All rights reserved
+  ~ Any type of duplication, distribution, rental, sale, award,
+  ~ Public accessibility or other use
+  ~ requires the express written consent of Carina Sophie Schoppe.
+  -->
 
 <?import javafx.scene.control.*?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.*?>
-<AnchorPane xmlns:fx="http://javafx.com/fxml/1" fx:id="pane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/17">
+<AnchorPane xmlns:fx="http://javafx.com/fxml/1" fx:id="pane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="733.0" xmlns="http://javafx.com/javafx/17">
     <children>
-        <ImageView fitHeight="400.0" fitWidth="600.0" pickOnBounds="true">
+        <ImageView fitHeight="401.0" fitWidth="739.0" pickOnBounds="true">
             <image>
                 <Image url="@../images/background.jpg"/>
             </image>
         </ImageView>
-        <Text fx:id="headText" layoutX="73.0" layoutY="68.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Carinas Remote-Console Player Management">
+        <Text fx:id="headText" layoutX="182.0" layoutY="66.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Carinas Remote-Console Player Management">
             <font>
                 <Font name="Berlin Sans FB" size="24.0"/>
             </font>
         </Text>
-        <TableView fx:id="table" layoutX="169.0" layoutY="106.0" prefHeight="259.0" prefWidth="416.0">
+        <TableView fx:id="table" layoutX="169.0" layoutY="106.0" prefHeight="259.0" prefWidth="551.0">
             <columns>
                 <TableColumn fx:id="username" prefWidth="154.00003051757812" text="Username"/>
-                <TableColumn fx:id="coordinates" prefWidth="118.0" text="Coordinates"/>
-                <TableColumn fx:id="world" prefWidth="142.66668701171875" text="World"/>
+                <TableColumn fx:id="coordinates" minWidth="0.0" prefWidth="0.0" text="Coordinates"/>
+                <TableColumn fx:id="world" prefWidth="110.66671752929688" text="World"/>
+                <TableColumn fx:id="health" prefWidth="85.33334350585938" text="Health"/>
+                <TableColumn fx:id="food" prefWidth="85.33334350585938" text="Food"/>
+                <TableColumn fx:id="playerCoordinates" prefWidth="110.66671752929688" text="Coordinates"/>
             </columns>
         </TableView>
         <TextField fx:id="reason" layoutX="15.0" layoutY="200.0" prefHeight="41.0" prefWidth="141.0" promptText="reason">
@@ -36,7 +49,7 @@
             </font>
         </Button>
         <ChoiceBox fx:id="command" layoutX="11.0" layoutY="127.0" prefWidth="150.0"/>
-        <Button fx:id="logoutButton" layoutX="527.0" layoutY="13.0" mnemonicParsing="false" onAction="#onLogout" text="Logout">
+        <Button fx:id="logoutButton" layoutX="658.0" layoutY="13.0" mnemonicParsing="false" onAction="#onLogout" text="Logout">
             <font>
                 <Font name="Berlin Sans FB" size="14.0"/>
             </font>
