@@ -84,7 +84,7 @@ gradle-app.setting
 
 # Cache of project
 .gradletasknamecache
-
+run
 .idea
 gradlew
 gradlew.bat
