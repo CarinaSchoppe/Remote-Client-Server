@@ -44,7 +44,7 @@ class Minecraft : JavaPlugin() {
 
     }
 
-    fun init(pluginManager: PluginManager) {
+    private fun init(pluginManager: PluginManager) {
         val messages = Messages().add()
         Messages.addMessagesDefault(messages.messagesConfig)
         fileHandler = FileHandler()

@@ -30,7 +30,7 @@ class Server(port: Int) {
 
     val loginCode = "mc2912"
     private val serverSocket: ServerSocket
-    lateinit var reader: BufferedReader
+    private lateinit var reader: BufferedReader
     lateinit var writer: PrintWriter
     val clients: MutableList<User> = mutableListOf()
 

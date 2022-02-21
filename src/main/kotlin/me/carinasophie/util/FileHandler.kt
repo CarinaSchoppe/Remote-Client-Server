@@ -18,19 +18,18 @@ import java.io.File
 class FileHandler {
     private val fileSettings: File = File("plugins/RemoteServerGUI/settings.yml")
     val ymlConfigSettings: YamlConfiguration
-    private val fileMessages: File
-    val ymlConfigMessages: YamlConfiguration
+    private val fileMessages: File = File("plugins/RemoteServerGUI/messages.yml")
+    private val ymlConfigMessages: YamlConfiguration
     private val fileUsers: File
     val ymlConfigUsers: YamlConfiguration
     private val fileRanks: File
-    val ymlConfigRanks: YamlConfiguration
+    private val ymlConfigRanks: YamlConfiguration
 
     private fun loadPrefix() {
         Minecraft.prefix = ymlConfigSettings.getString("prefix")!! + " "
     }
 
     init {
-        fileMessages = File("plugins/RemoteServerGUI/messages.yml")
         fileUsers = File("plugins/RemoteServerGUI/users.yml")
         fileRanks = File("plugins/RemoteServerGUI/ranks.yml")
         ymlConfigSettings = YamlConfiguration.loadConfiguration(fileSettings)
@@ -41,11 +40,6 @@ class FileHandler {
         loadPrefix()
         Minecraft.debug = ymlConfigSettings.getBoolean("debug")
         Ranks.loadRanks(ymlConfigRanks)
-    }
-
-    fun addToConfig(key: String, value: Any) {
-        ymlConfigSettings.set(key, value)
-        saveConfigs()
     }
 
 

@@ -17,11 +17,7 @@ import java.io.File
 
 class Messages {
     private val messagesFile: File = File("plugins/RemoteServerGUI/messages.yml")
-    var messagesConfig: YamlConfiguration
-
-    init {
-        messagesConfig = YamlConfiguration.loadConfiguration(messagesFile)
-    }
+    var messagesConfig: YamlConfiguration = YamlConfiguration.loadConfiguration(messagesFile)
 
     fun add(): Messages {
         messageInstance = this
