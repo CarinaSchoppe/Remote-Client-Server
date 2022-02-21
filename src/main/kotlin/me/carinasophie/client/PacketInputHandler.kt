@@ -11,13 +11,18 @@
 
 package me.carinasophie.client
 
+import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
 import javafx.application.Platform
 import javafx.stage.Stage
+import me.carinasophie.server.minecraft.Player
 import me.carinasophie.util.Dialog
 import me.carinasophie.util.Packet
 import me.carinasophie.util.PacketType
 import me.carinasophie.util.grafics.Console
 import me.carinasophie.util.grafics.Login
+import me.carinasophie.util.grafics.Selection
+
 
 object PacketInputHandler {
 
@@ -47,14 +52,29 @@ object PacketInputHandler {
             PacketType.LOG -> {
                 Platform.runLater {
                     if (Console.instance != null) {
-                        if (Console.instance!!.consoleWindow != null)
-                            Console.instance!!.consoleWindow.text += packet.data.get("log").asString + "\n"
+                        Console.instance!!.consoleWindow.text += packet.data.get("log").asString + "\n"
+                    }
+                }
+                return
+            }
+            PacketType.REFRESH -> {
+                Platform.runLater {
+                    if (Selection.instance != null) {
+                        refresh(packet)
                     }
                 }
                 return
             }
         }
 
+    }
+
+    fun refresh(packet: Packet) {
+        //Convert a jsonString to a JsonObject
+        val myType = object : TypeToken<List<Player>>() {}.type
+        val test = Gson().fromJson<List<Player>>(packet.data.get("players"), myType)
+        Selection.players = test
+        Selection.instance.update()
     }
 
 

@@ -31,7 +31,6 @@
         <TableView fx:id="table" layoutX="169.0" layoutY="106.0" prefHeight="259.0" prefWidth="551.0">
             <columns>
                 <TableColumn fx:id="username" prefWidth="154.00003051757812" text="Username"/>
-                <TableColumn fx:id="coordinates" minWidth="0.0" prefWidth="0.0" text="Coordinates"/>
                 <TableColumn fx:id="world" prefWidth="110.66671752929688" text="World"/>
                 <TableColumn fx:id="health" prefWidth="85.33334350585938" text="Health"/>
                 <TableColumn fx:id="food" prefWidth="85.33334350585938" text="Food"/>
@@ -57,6 +56,11 @@
         <Button fx:id="consoleButton" layoutX="14.0" layoutY="13.0" mnemonicParsing="false" onAction="#onConsole" text="Console">
             <font>
                 <Font name="Berlin Sans FB" size="14.0"/>
+            </font>
+        </Button>
+        <Button fx:id="refresh" layoutX="41.0" layoutY="324.0" mnemonicParsing="false" onAction="#onRefresh" prefHeight="41.0" prefWidth="76.0" text="refresh">
+            <font>
+                <Font name="Berlin Sans FB" size="16.0"/>
             </font>
         </Button>
     </children>

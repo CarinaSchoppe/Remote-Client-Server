@@ -1,7 +1,7 @@
 /*
  * Copyright Notice for KotlinServerClientMinecraft
  * Copyright (c) at Carina Sophie Schoppe 2022
- * File created on 20.02.22, 15:38 by Carina The Latest changes made by Carina on 20.02.22, 15:38.
+ * File created on 21.02.22, 12:00 by Carina The Latest changes made by Carina on 21.02.22, 10:27.
  *  All contents of "Player.kt" are protected by copyright. The copyright law, unless expressly indicated otherwise, is
  * at Carina Sophie Schoppe. All rights reserved
  * Any type of duplication, distribution, rental, sale, award,
@@ -13,7 +13,7 @@ package me.carinasophie.server.minecraft
 
 data class Coordinates(val x: Int, val y: Int, val z: Int) {
     override fun toString(): String {
-        return "($x, $y, $z)"
+        return "(X:$x, Y:$y, Z:$z)"
     }
 }
 

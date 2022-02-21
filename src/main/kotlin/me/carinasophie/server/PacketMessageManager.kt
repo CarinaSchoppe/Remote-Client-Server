@@ -11,10 +11,15 @@
 
 package me.carinasophie.server
 
+import com.google.gson.Gson
 import com.google.gson.JsonObject
 import me.carinasophie.Minecraft
+import me.carinasophie.server.minecraft.Coordinates
+import me.carinasophie.server.minecraft.Player
+import me.carinasophie.util.Messages
 import me.carinasophie.util.Packet
 import me.carinasophie.util.PacketType
+import org.bukkit.Bukkit
 import org.bukkit.ChatColor
 
 object PacketMessageManager {
@@ -29,10 +34,48 @@ object PacketMessageManager {
 
     }
 
+    fun packetHandler(client: Client, packet: Packet) {
+        if (packet.packetType == PacketType.COMMAND) {
+            val command = packet.data.get("command").asString
+            if (command.startsWith("/")) {
+                if (!(client.user!!.hasPermission(command.substring(1).split(" ")[0]))) {
+                    val json = JsonObject()
+                    val type = JsonObject()
+                    type.addProperty("text", "Not the permissions!")
+                    type.addProperty("type", "fail")
+                    json.add("info", type)
+                    client.writer.println(Packet(PacketType.INFO, json).createJsonPacket())
+                }
+                Minecraft.instance.server.dispatchCommand(Minecraft.instance.server.consoleSender, command.substring(1))
+                val json = JsonObject()
+                val type = JsonObject()
+                type.addProperty("text", "Command executed!")
+                type.addProperty("type", "success")
+                json.add("info", type)
+                client.writer.println(Packet(PacketType.INFO, json).createJsonPacket())
+            }
+        } else if (packet.packetType == PacketType.REFRESH) {
+            refreshPlayers(client)
+        }
+    }
+
+    fun refreshPlayers(client: Client) {
+        val json = JsonObject()
+        json.addProperty("action", "refreshPlayers")
+        val players = mutableListOf<Player>()
+        for (player in Minecraft.instance.server.onlinePlayers) {
+            val p = Player(player.name, player.health.toInt(), player.foodLevel, Coordinates(player.location.x.toInt(), player.location.y.toInt(), player.location.z.toInt()), player.world.name)
+            players.add(p)
+        }
+        json.add("players", Gson().toJsonTree(players))
+        println(json)
+        client.writer.println(Packet(PacketType.REFRESH, json).createJsonPacket())
+    }
+
     fun disconnect(client: Client) {
+        Minecraft.server.loggedInUsers.remove(client.user)
         client.socket.close()
-        Minecraft.server.users.remove(client.user)
-        println(ChatColor.translateAlternateColorCodes('&', "&cClient disconnected"))
+        Bukkit.getConsoleSender().sendMessage(ChatColor.translateAlternateColorCodes('&', Messages.getMessage("client-disconnected").replace("%username%", client.name ?: "unknown")))
     }
 
     fun doubleLogin(client: Client) {

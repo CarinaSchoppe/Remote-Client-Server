@@ -15,6 +15,7 @@ import javafx.event.ActionEvent
 import javafx.fxml.FXML
 import javafx.fxml.FXMLLoader
 import javafx.fxml.Initializable
+import javafx.scene.Node
 import javafx.scene.Parent
 import javafx.scene.Scene
 import javafx.scene.control.Button
@@ -62,12 +63,13 @@ class Console : Initializable {
 
     @FXML
     fun onLogout(event: ActionEvent) {
-
+        System.exit(0)
     }
 
     @FXML
     fun onMenu(event: ActionEvent) {
-
+        val primaryStage = (event.source as Node).scene.window as Stage
+        Selection().start(primaryStage)
     }
 
     @FXML

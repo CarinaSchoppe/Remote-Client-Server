@@ -11,7 +11,6 @@
 
 package me.carinasophie.server
 
-import com.google.gson.JsonObject
 import me.carinasophie.Minecraft
 import me.carinasophie.util.Messages
 import me.carinasophie.util.Packet
@@ -32,7 +31,7 @@ class Server(port: Int) {
     private val serverSocket: ServerSocket
     private lateinit var reader: BufferedReader
     var writer: PrintWriter? = null
-    val users: MutableList<User> = mutableListOf()
+    val loggedInUsers: MutableList<User> = mutableListOf()
 
     init {
         serverSocket = ServerSocket(port)
@@ -65,14 +64,14 @@ class Server(port: Int) {
                 }
                 if (input == null) {
                     client.socket.close()
-                    users.remove(client.user)
+                    loggedInUsers.remove(client.user)
                     break
                 }
                 val packet = Packet.fromJson(input)
                 if (Minecraft.debug) Bukkit.getConsoleSender().sendMessage(ChatColor.translateAlternateColorCodes('&', Messages.getMessage("client-sent").replace("%username%", client.name ?: "unknown").replace("%message%", input)))
                 if (!client.activated) {
                     if (packet.packetType == PacketType.LOGIN && packet.data.get("magic").asString.equals(loginCode)) {
-                        for (user in users) {
+                        for (user in loggedInUsers) {
                             if (user.username == packet.data.getAsJsonObject("login").get("username").asString) {
                                 PacketMessageManager.doubleLogin(client)
                                 return@Thread
@@ -81,7 +80,7 @@ class Server(port: Int) {
                         for (user in User.users) {
                             if (user.username == packet.data.getAsJsonObject("login").get("username").asString && user.password == packet.data.getAsJsonObject("login").get("password").asString) {
                                 client.activated = true
-                                users.add(user)
+                                loggedInUsers.add(user)
                                 client.name = packet.data.getAsJsonObject("login").get("username").asString
                                 Bukkit.getConsoleSender().sendMessage(ChatColor.translateAlternateColorCodes('&', Messages.getMessage("client-activated").replace("%username%", client.name!!)))
                                 PacketMessageManager.loginSuccess(client)
@@ -97,26 +96,7 @@ class Server(port: Int) {
                         return@Thread
                     }
                 }
-                if (packet.packetType == PacketType.COMMAND) {
-                    val command = packet.data.get("command").asString
-                    if (command.startsWith("/")) {
-                        if (!(client.user!!.hasPermission(command.substring(1).split(" ")[0]))) {
-                            val json = JsonObject()
-                            val type = JsonObject()
-                            type.addProperty("text", "Not the permissions!")
-                            type.addProperty("type", "fail")
-                            json.add("info", type)
-                            client.writer.println(Packet(PacketType.INFO, json).createJsonPacket())
-                        }
-                        Minecraft.instance.server.dispatchCommand(Minecraft.instance.server.consoleSender, command.substring(1))
-                        val json = JsonObject()
-                        val type = JsonObject()
-                        type.addProperty("text", "Command executed!")
-                        type.addProperty("type", "success")
-                        json.add("info", type)
-                        client.writer.println(Packet(PacketType.INFO, json).createJsonPacket())
-                    }
-                }
+                PacketMessageManager.packetHandler(client, packet)
             }
         }.start()
     }
