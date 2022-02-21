@@ -16,9 +16,9 @@
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.*?>
-<AnchorPane xmlns:fx="http://javafx.com/fxml/1" fx:id="pane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="733.0" xmlns="http://javafx.com/javafx/17">
+<AnchorPane xmlns:fx="http://javafx.com/fxml/1" fx:id="pane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="763.0" xmlns="http://javafx.com/javafx/17">
     <children>
-        <ImageView fitHeight="401.0" fitWidth="739.0" pickOnBounds="true">
+        <ImageView fitHeight="399.0" fitWidth="763.0" pickOnBounds="true">
             <image>
                 <Image url="@../images/background.jpg"/>
             </image>
@@ -28,13 +28,16 @@
                 <Font name="Berlin Sans FB" size="24.0"/>
             </font>
         </Text>
-        <TableView fx:id="table" layoutX="169.0" layoutY="106.0" prefHeight="259.0" prefWidth="551.0">
+        <TableView fx:id="table" layoutX="169.0" layoutY="106.0" prefHeight="259.0" prefWidth="582.0">
             <columns>
-                <TableColumn fx:id="username" prefWidth="154.00003051757812" text="Username"/>
-                <TableColumn fx:id="world" prefWidth="110.66671752929688" text="World"/>
-                <TableColumn fx:id="health" prefWidth="85.33334350585938" text="Health"/>
-                <TableColumn fx:id="food" prefWidth="85.33334350585938" text="Food"/>
-                <TableColumn fx:id="playerCoordinates" prefWidth="110.66671752929688" text="Coordinates"/>
+                <TableColumn fx:id="username" prefWidth="109.0" text="Username"/>
+                <TableColumn fx:id="world" prefWidth="81.0" text="World"/>
+                <TableColumn fx:id="health" prefWidth="53.0" text="Health"/>
+                <TableColumn fx:id="food" prefWidth="58.0" text="Food"/>
+                <TableColumn fx:id="playerCoordinates" prefWidth="107.0" text="Coordinates"/>
+                <TableColumn fx:id="gamemode" prefWidth="74.0" text="Gamemode"/>
+                <TableColumn fx:id="level" prefWidth="47.0" text="Level"/>
+                <TableColumn fx:id="ping" prefWidth="52.0" text="Ping"/>
             </columns>
         </TableView>
         <TextField fx:id="reason" layoutX="15.0" layoutY="200.0" prefHeight="41.0" prefWidth="141.0" promptText="reason">
@@ -48,12 +51,12 @@
             </font>
         </Button>
         <ChoiceBox fx:id="command" layoutX="11.0" layoutY="127.0" prefWidth="150.0"/>
-        <Button fx:id="logoutButton" layoutX="658.0" layoutY="13.0" mnemonicParsing="false" onAction="#onLogout" text="Logout">
+        <Button fx:id="logoutButton" layoutX="660.0" layoutY="13.0" mnemonicParsing="false" onAction="#onLogout" prefHeight="41.0" prefWidth="76.0" text="Logout">
             <font>
                 <Font name="Berlin Sans FB" size="14.0"/>
             </font>
         </Button>
-        <Button fx:id="consoleButton" layoutX="14.0" layoutY="13.0" mnemonicParsing="false" onAction="#onConsole" text="Console">
+        <Button fx:id="consoleButton" layoutX="14.0" layoutY="13.0" mnemonicParsing="false" onAction="#onConsole" prefHeight="41.0" prefWidth="76.0" text="Console">
             <font>
                 <Font name="Berlin Sans FB" size="14.0"/>
             </font>
@@ -61,6 +64,11 @@
         <Button fx:id="refresh" layoutX="41.0" layoutY="324.0" mnemonicParsing="false" onAction="#onRefresh" prefHeight="41.0" prefWidth="76.0" text="refresh">
             <font>
                 <Font name="Berlin Sans FB" size="16.0"/>
+            </font>
+        </Button>
+        <Button fx:id="chatButton" layoutX="93.0" layoutY="13.0" mnemonicParsing="false" onAction="#onChat" prefHeight="41.0" prefWidth="76.0" text="Chat">
+            <font>
+                <Font name="Berlin Sans FB" size="14.0"/>
             </font>
         </Button>
     </children>

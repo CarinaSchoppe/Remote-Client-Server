@@ -17,6 +17,7 @@ import javafx.event.ActionEvent
 import javafx.fxml.FXML
 import javafx.fxml.FXMLLoader
 import javafx.fxml.Initializable
+import javafx.scene.Node
 import javafx.scene.Parent
 import javafx.scene.Scene
 import javafx.scene.control.*
@@ -25,6 +26,7 @@ import javafx.scene.text.Text
 import javafx.stage.Stage
 import me.carinasophie.client.Client
 import me.carinasophie.server.minecraft.Player
+import me.carinasophie.util.Dialog
 import me.carinasophie.util.Packet
 import me.carinasophie.util.PacketType
 import java.net.URL
@@ -39,7 +41,7 @@ class Selection : Initializable {
     private lateinit var location: URL
 
     @FXML
-    private lateinit var command: ChoiceBox<Any>
+    private lateinit var command: ChoiceBox<String>
 
     @FXML
     private lateinit var consoleButton: Button
@@ -72,17 +74,36 @@ class Selection : Initializable {
     lateinit var table: TableView<Player>
 
     @FXML
+    private lateinit var level: TableColumn<Player, String>
+
+    @FXML
     lateinit var username: TableColumn<Player, String>
+
+    @FXML
+    private lateinit var ping: TableColumn<Player, String>
 
     @FXML
     private lateinit var refresh: Button
 
     @FXML
+    private lateinit var gamemode: TableColumn<Player, String>
+
+    @FXML
     lateinit var world: TableColumn<Player, String>
 
     @FXML
-    fun onConsole(event: ActionEvent) {
+    private lateinit var chatButton: Button
 
+    @FXML
+    fun onChat(event: ActionEvent) {
+        val primaryStage = (event.source as Node).scene.window as Stage
+        Chat().start(primaryStage)
+    }
+
+    @FXML
+    fun onConsole(event: ActionEvent) {
+        val primaryStage = (event.source as Node).scene.window as Stage
+        Console().start(primaryStage)
     }
 
     @FXML
@@ -98,11 +119,67 @@ class Selection : Initializable {
 
     @FXML
     fun onSend(event: ActionEvent) {
+        if (table.selectionModel.selectedItem == null) {
+            Dialog.show("Select a player!", "Selection-Error", Alert.AlertType.ERROR)
+            return
+        }
+
+        when (command.value) {
+            "Kick" -> {
+                if (reasonCheck()) return
+                val json = JsonObject()
+                json.addProperty("command", "/kick ${table.selectionModel.selectedItem!!.name} ${reason.text}")
+                Client.instance.writer.println(Packet(PacketType.COMMAND, json).createJsonPacket())
+
+            }
+            "Mute" -> {
+                if (reasonCheck()) return
+                val json = JsonObject()
+                json.addProperty("command", "/mute ${table.selectionModel.selectedItem!!.name} ${reason.text}")
+                Client.instance.writer.println(Packet(PacketType.COMMAND, json).createJsonPacket())
+
+            }
+            "Unmute" -> {
+                val json = JsonObject()
+                json.addProperty("command", "/unmute ${table.selectionModel.selectedItem!!.name}")
+                Client.instance.writer.println(Packet(PacketType.COMMAND, json).createJsonPacket())
+
+            }
+            "Ban" -> {
+                if (reasonCheck()) return
+                val json = JsonObject()
+                json.addProperty("command", "/ban ${table.selectionModel.selectedItem!!.name} ${reason.text}")
+                Client.instance.writer.println(Packet(PacketType.COMMAND, json).createJsonPacket())
+
+            }
+            "Unban" -> {
+                val json = JsonObject()
+                json.addProperty("command", "/unban ${table.selectionModel.selectedItem!!.name}")
+                Client.instance.writer.println(Packet(PacketType.COMMAND, json).createJsonPacket())
+
+            }
+
+            "Warn" -> {
+                if (reasonCheck()) return
+                val json = JsonObject()
+                json.addProperty("command", "/warn ${table.selectionModel.selectedItem!!.name} ${reason.text}")
+                Client.instance.writer.println(Packet(PacketType.COMMAND, json).createJsonPacket())
+
+            }
+        }
 
     }
 
+    private fun reasonCheck(): Boolean {
+        if (reason.text == null) {
+            Dialog.show("Enter a reason!", "Reason-Error", Alert.AlertType.ERROR)
+            return true
+        }
+        return false
+    }
+
     companion object {
-        lateinit var instance: Selection
+        var instance: Selection? = null
         var players = listOf<Player>()
     }
 
@@ -110,6 +187,7 @@ class Selection : Initializable {
         val loader = FXMLLoader(javaClass.getResource("/grafics/selection.fxml"))
         loader.setController(this)
         val root = loader.load<Any>() as Parent
+        initialize()
         primaryStage.title = "Selection"
         primaryStage.isResizable = false
         primaryStage.scene = Scene(root)
@@ -120,13 +198,17 @@ class Selection : Initializable {
 
     @FXML
     fun initialize() {
+        assert(chatButton != null) { "fx:id=\"chatButton\" was not injected: check your FXML file 'chat.fxml'." }
         assert(command != null) { "fx:id=\"command\" was not injected: check your FXML file 'selection.fxml'." }
         assert(consoleButton != null) { "fx:id=\"consoleButton\" was not injected: check your FXML file 'selection.fxml'." }
         assert(food != null) { "fx:id=\"food\" was not injected: check your FXML file 'selection.fxml'." }
+        assert(gamemode != null) { "fx:id=\"gamemode\" was not injected: check your FXML file 'selection.fxml'." }
         assert(headText != null) { "fx:id=\"headText\" was not injected: check your FXML file 'selection.fxml'." }
         assert(health != null) { "fx:id=\"health\" was not injected: check your FXML file 'selection.fxml'." }
+        assert(level != null) { "fx:id=\"level\" was not injected: check your FXML file 'selection.fxml'." }
         assert(logoutButton != null) { "fx:id=\"logoutButton\" was not injected: check your FXML file 'selection.fxml'." }
         assert(pane != null) { "fx:id=\"pane\" was not injected: check your FXML file 'selection.fxml'." }
+        assert(ping != null) { "fx:id=\"ping\" was not injected: check your FXML file 'selection.fxml'." }
         assert(playerCoordinates != null) { "fx:id=\"playerCoordinates\" was not injected: check your FXML file 'selection.fxml'." }
         assert(reason != null) { "fx:id=\"reason\" was not injected: check your FXML file 'selection.fxml'." }
         assert(refresh != null) { "fx:id=\"refresh\" was not injected: check your FXML file 'selection.fxml'." }
@@ -143,6 +225,17 @@ class Selection : Initializable {
         world.setCellValueFactory { SimpleStringProperty(it.value.world) }
         playerCoordinates.setCellValueFactory { SimpleStringProperty(it.value.coordinates.toString()) }
         username.setCellValueFactory { SimpleStringProperty(it.value.name) }
+        level.setCellValueFactory { SimpleStringProperty(it.value.level.toString()) }
+        ping.setCellValueFactory { SimpleStringProperty(it.value.ping.toString()) }
+        gamemode.setCellValueFactory { SimpleStringProperty(it.value.gamemode) }
+
+        command.items.add("Mute")
+        command.items.add("Unmute")
+        command.items.add("Kick")
+        command.items.add("Ban")
+        command.items.add("Unban")
+        command.items.add("Warn")
+
 
     }
 

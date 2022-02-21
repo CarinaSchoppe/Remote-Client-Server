@@ -12,6 +12,7 @@
 package me.carinasophie.client
 
 import com.google.gson.JsonObject
+import javafx.scene.control.Alert
 import me.carinasophie.util.Dialog
 import me.carinasophie.util.Packet
 import me.carinasophie.util.PacketType
@@ -22,11 +23,12 @@ import java.io.PrintWriter
 import java.net.Socket
 import java.nio.charset.StandardCharsets
 
-class Client(val name: String, val ip: String, val port: Int, val password: String) {
+class Client(private val name: String, private val ip: String, private val port: Int, private val password: String) {
 
-    private lateinit var socket: Socket
-    lateinit var reader: BufferedReader
+    private var socket: Socket? = null
+    private lateinit var reader: BufferedReader
     lateinit var writer: PrintWriter
+    val magicCode = "mc2912"
 
     companion object {
         lateinit var instance: Client
@@ -38,20 +40,22 @@ class Client(val name: String, val ip: String, val port: Int, val password: Stri
             println("Client $name connected to $ip:$port")
 
         } catch (e: Exception) {
-            Dialog.show(dialogType = Dialog.DialogType.ERROR, title = "Connection failed", message = "Could not connect to server")
+            Dialog.show(dialogType = Alert.AlertType.ERROR, title = "Connection failed", message = "Could not connect to server")
         }
     }
 
     fun disconnect() {
-        socket.close()
+        socket!!.close()
         println("Client \"$name\" disconnected from $ip:$port")
     }
 
     fun start() {
-        if (socket.isConnected) {
+        if (socket == null)
+            return
+        if (socket!!.isConnected) {
             instance = this
-            reader = BufferedReader(InputStreamReader(socket.getInputStream(), StandardCharsets.UTF_8), 16384)
-            writer = PrintWriter(OutputStreamWriter(socket.getOutputStream(), StandardCharsets.UTF_8), true)
+            reader = BufferedReader(InputStreamReader(socket!!.getInputStream(), StandardCharsets.UTF_8), 16384)
+            writer = PrintWriter(OutputStreamWriter(socket!!.getOutputStream(), StandardCharsets.UTF_8), true)
             login()
             read()
         }
@@ -62,7 +66,7 @@ class Client(val name: String, val ip: String, val port: Int, val password: Stri
         val info = JsonObject()
         info.addProperty("username", name)
         info.addProperty("password", password)
-        json.addProperty("magic", "mc2912")
+        json.addProperty("magic", magicCode)
         json.add("login", info)
         writer.println(Packet(PacketType.LOGIN, json).createJsonPacket())
 

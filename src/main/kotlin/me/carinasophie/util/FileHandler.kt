@@ -17,27 +17,17 @@ import java.io.File
 
 class FileHandler {
     private val fileSettings: File = File("plugins/RemoteServerGUI/settings.yml")
-    val ymlConfigSettings: YamlConfiguration
+    val ymlConfigSettings: YamlConfiguration = YamlConfiguration.loadConfiguration(fileSettings)
     private val fileMessages: File = File("plugins/RemoteServerGUI/messages.yml")
-    private val ymlConfigMessages: YamlConfiguration
-    private val fileUsers: File
-    val ymlConfigUsers: YamlConfiguration
-    private val fileRanks: File
-    private val ymlConfigRanks: YamlConfiguration
-
-    private fun loadPrefix() {
-        Minecraft.prefix = ymlConfigSettings.getString("prefix")!! + " "
-    }
+    private val ymlConfigMessages: YamlConfiguration = YamlConfiguration.loadConfiguration(fileMessages)
+    private val fileUsers: File = File("plugins/RemoteServerGUI/users.yml")
+    val ymlConfigUsers: YamlConfiguration = YamlConfiguration.loadConfiguration(fileUsers)
+    private val fileRanks: File = File("plugins/RemoteServerGUI/ranks.yml")
+    private val ymlConfigRanks: YamlConfiguration = YamlConfiguration.loadConfiguration(fileRanks)
 
     init {
-        fileUsers = File("plugins/RemoteServerGUI/users.yml")
-        fileRanks = File("plugins/RemoteServerGUI/ranks.yml")
-        ymlConfigSettings = YamlConfiguration.loadConfiguration(fileSettings)
-        ymlConfigRanks = YamlConfiguration.loadConfiguration(fileRanks)
-        ymlConfigMessages = YamlConfiguration.loadConfiguration(fileMessages)
-        ymlConfigUsers = YamlConfiguration.loadConfiguration(fileUsers)
         saveDefauts()
-        loadPrefix()
+        Minecraft.prefix = ymlConfigSettings.getString("prefix")!! + " "
         Minecraft.debug = ymlConfigSettings.getBoolean("debug")
         Ranks.loadRanks(ymlConfigRanks)
     }

@@ -24,12 +24,13 @@ open class Logger : AbstractAppender {
     init {
         start()
     }
+
     override fun append(event: LogEvent) {
         val log = event.toImmutable()
         val json = JsonObject()
         json.addProperty("log", log.message.formattedMessage)
-        if (Minecraft.server.writer != null) {
-            Minecraft.server.writer!!.println(Packet(PacketType.LOG, json).createJsonPacket())
+        for (client in Minecraft.server.loggedInClients) {
+            client.writer.println(Packet(PacketType.LOG, json).createJsonPacket())
         }
     }
 }

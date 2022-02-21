@@ -11,6 +11,7 @@
 
 package me.carinasophie.util.grafics
 
+import com.google.gson.JsonObject
 import javafx.event.ActionEvent
 import javafx.fxml.FXML
 import javafx.fxml.FXMLLoader
@@ -18,12 +19,17 @@ import javafx.fxml.Initializable
 import javafx.scene.Node
 import javafx.scene.Parent
 import javafx.scene.Scene
+import javafx.scene.control.Alert
 import javafx.scene.control.Button
 import javafx.scene.control.TextArea
 import javafx.scene.control.TextField
 import javafx.scene.layout.AnchorPane
 import javafx.scene.text.Text
 import javafx.stage.Stage
+import me.carinasophie.client.Client
+import me.carinasophie.util.Dialog
+import me.carinasophie.util.Packet
+import me.carinasophie.util.PacketType
 import java.net.URL
 import java.util.*
 
@@ -32,6 +38,7 @@ class Console : Initializable {
 
     companion object {
         var instance: Console? = null
+        var text = ""
     }
 
     @FXML
@@ -67,6 +74,15 @@ class Console : Initializable {
     }
 
     @FXML
+    private lateinit var chatButton: Button
+
+    @FXML
+    fun onChat(event: ActionEvent) {
+        val primaryStage = (event.source as Node).scene.window as Stage
+        Chat().start(primaryStage)
+    }
+
+    @FXML
     fun onMenu(event: ActionEvent) {
         val primaryStage = (event.source as Node).scene.window as Stage
         Selection().start(primaryStage)
@@ -74,7 +90,13 @@ class Console : Initializable {
 
     @FXML
     fun onSend(event: ActionEvent) {
-
+        if (command.text == null) {
+            Dialog.show("Enter a command!", "Command-Error", Alert.AlertType.ERROR)
+            return
+        }
+        val json = JsonObject()
+        json.addProperty("command", "${command.text}")
+        Client.instance.writer.println(Packet(PacketType.COMMAND, json).createJsonPacket())
     }
 
     @FXML
@@ -86,6 +108,7 @@ class Console : Initializable {
         assert(pane != null) { "fx:id=\"pane\" was not injected: check your FXML file 'console.fxml'." }
         assert(playerMenuButton != null) { "fx:id=\"playerMenuButton\" was not injected: check your FXML file 'console.fxml'." }
         assert(sendButton != null) { "fx:id=\"sendButton\" was not injected: check your FXML file 'console.fxml'." }
+        assert(chatButton != null) { "fx:id=\"chatButton\" was not injected: check your FXML file 'chat.fxml'." }
         print("Console initialized")
     }
 
@@ -93,9 +116,11 @@ class Console : Initializable {
         val loader = FXMLLoader(javaClass.getResource("/grafics/console.fxml"))
         loader.setController(this)
         val root = loader.load<Any>() as Parent
-        primaryStage.title = "Console"
         primaryStage.isResizable = false
+        primaryStage.title = "Console"
+        consoleWindow.text = text
         primaryStage.scene = Scene(root)
+        initialize()
         primaryStage.show()
     }
 

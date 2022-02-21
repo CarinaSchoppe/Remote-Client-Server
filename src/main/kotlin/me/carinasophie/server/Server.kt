@@ -23,15 +23,15 @@ import java.net.ServerSocket
 import java.net.Socket
 import java.nio.charset.StandardCharsets
 
-data class Client(val socket: Socket, var name: String?, val writer: PrintWriter, val reader: BufferedReader, var activated: Boolean = false, val user: User?)
+data class Client(val socket: Socket, var name: String?, val writer: PrintWriter, val reader: BufferedReader, var activated: Boolean = false, var user: User?)
 
 class Server(port: Int) {
 
     val loginCode = "mc2912"
     private val serverSocket: ServerSocket
     private lateinit var reader: BufferedReader
-    var writer: PrintWriter? = null
-    val loggedInUsers: MutableList<User> = mutableListOf()
+    private var writer: PrintWriter? = null
+    val loggedInClients: MutableList<Client> = mutableListOf()
 
     init {
         serverSocket = ServerSocket(port)
@@ -64,15 +64,15 @@ class Server(port: Int) {
                 }
                 if (input == null) {
                     client.socket.close()
-                    loggedInUsers.remove(client.user)
+                    loggedInClients.remove(client)
                     break
                 }
                 val packet = Packet.fromJson(input)
                 if (Minecraft.debug) Bukkit.getConsoleSender().sendMessage(ChatColor.translateAlternateColorCodes('&', Messages.getMessage("client-sent").replace("%username%", client.name ?: "unknown").replace("%message%", input)))
                 if (!client.activated) {
                     if (packet.packetType == PacketType.LOGIN && packet.data.get("magic").asString.equals(loginCode)) {
-                        for (user in loggedInUsers) {
-                            if (user.username == packet.data.getAsJsonObject("login").get("username").asString) {
+                        for (userClient in loggedInClients) {
+                            if (userClient.user!!.username == packet.data.getAsJsonObject("login").get("username").asString) {
                                 PacketMessageManager.doubleLogin(client)
                                 return@Thread
                             }
@@ -80,7 +80,8 @@ class Server(port: Int) {
                         for (user in User.users) {
                             if (user.username == packet.data.getAsJsonObject("login").get("username").asString && user.password == packet.data.getAsJsonObject("login").get("password").asString) {
                                 client.activated = true
-                                loggedInUsers.add(user)
+                                loggedInClients.add(client)
+                                client.user = user
                                 client.name = packet.data.getAsJsonObject("login").get("username").asString
                                 Bukkit.getConsoleSender().sendMessage(ChatColor.translateAlternateColorCodes('&', Messages.getMessage("client-activated").replace("%username%", client.name!!)))
                                 PacketMessageManager.loginSuccess(client)

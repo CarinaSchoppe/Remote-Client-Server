@@ -38,6 +38,7 @@ class Messages {
             config.addDefault("client-activated", "&aClient activated: &6%username%!")
             config.addDefault("plugin-enabled", "&7>> &c&lEnabled!")
             config.addDefault("plugin-disabled", "&7>> &c&lDisabled!")
+            config.addDefault("admin-message", "&6Admin-System-Broadcast&7>> &d%message%")
             config.options().copyDefaults(true)
             config.save(messageInstance.messagesFile)
         }

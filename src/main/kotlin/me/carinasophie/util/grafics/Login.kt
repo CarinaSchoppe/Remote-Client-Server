@@ -17,6 +17,7 @@ import javafx.fxml.FXML
 import javafx.fxml.FXMLLoader
 import javafx.scene.Parent
 import javafx.scene.Scene
+import javafx.scene.control.Alert
 import javafx.scene.control.Button
 import javafx.scene.control.PasswordField
 import javafx.scene.control.TextField
@@ -61,13 +62,13 @@ class Login : Application() {
     fun onLogin(event: ActionEvent) {
         if (ip.text.isEmpty() || port.text.isEmpty() || username.text.isEmpty() || password.text.isEmpty()) {
             println("Please fill all fields")
-            Dialog.show("Please fill all fields", "Login-Error", Dialog.DialogType.ERROR)
+            Dialog.show("Please fill all fields", "Login-Error", Alert.AlertType.ERROR)
             return
         }
         try {
             port.text.toInt()
         } catch (e: Exception) {
-            Dialog.show("Please enter a valid port", "Port-Error", Dialog.DialogType.ERROR)
+            Dialog.show("Please enter a valid port", "Port-Error", Alert.AlertType.ERROR)
         }
 
         val client = Client(ip = ip.text, port = port.text.toInt(), name = username.text, password = password.text)
@@ -83,7 +84,6 @@ class Login : Application() {
         assert(password != null) { "fx:id=\"password\" was not injected: check your FXML file 'login.fxml'." }
         assert(port != null) { "fx:id=\"port\" was not injected: check your FXML file 'login.fxml'." }
         assert(username != null) { "fx:id=\"username\" was not injected: check your FXML file 'login.fxml'." }
-
     }
 
 

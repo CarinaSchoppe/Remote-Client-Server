@@ -16,18 +16,10 @@ import javafx.scene.control.Alert.AlertType
 
 
 object Dialog {
-    fun show(message: String?, title: String?, dialogType: DialogType) {
-        val alert = Alert(dialogType.toAlertType(), message)
+    fun show(message: String?, title: String?, dialogType: AlertType) {
+        val alert = Alert(dialogType, message)
         alert.title = title
         alert.headerText = title
         alert.showAndWait()
-    }
-
-    enum class DialogType(private val alertType: AlertType) {
-        INFO(AlertType.INFORMATION), ERROR(AlertType.ERROR);
-
-        fun toAlertType(): AlertType {
-            return alertType
-        }
     }
 }

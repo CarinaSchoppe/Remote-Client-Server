@@ -16,7 +16,7 @@ import org.bukkit.Bukkit
 import org.bukkit.ChatColor
 import org.bukkit.configuration.file.YamlConfiguration
 
-class User(val username: String, val password: String, var rank: Ranks) {
+class User(val username: String, val password: String, val rank: Ranks) {
     override fun toString(): String {
         return "User(username='$username':password='$password')"
     }

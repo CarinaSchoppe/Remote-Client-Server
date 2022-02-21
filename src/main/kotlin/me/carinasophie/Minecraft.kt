@@ -12,6 +12,8 @@
 package me.carinasophie
 
 import me.carinasophie.server.Server
+import me.carinasophie.server.minecraft.events.LeaveAndJoin
+import me.carinasophie.server.minecraft.events.PlayerChat
 import me.carinasophie.util.FileHandler
 import me.carinasophie.util.Messages
 import me.carinasophie.util.Ranks
@@ -57,7 +59,8 @@ class Minecraft : JavaPlugin() {
         User.addUserToConfig(fileHandler.ymlConfigUsers, User("PixelsDE", "pixelsde", Ranks.getRank("ADMIN")!!))
         User.registerUsers(fileHandler.ymlConfigUsers)
         Minecraft.server = Server(fileHandler.ymlConfigSettings.getInt("default-server-port"))
-
+        pluginManager.registerEvents(LeaveAndJoin(), this)
+        pluginManager.registerEvents(PlayerChat(), this)
     }
 
 }

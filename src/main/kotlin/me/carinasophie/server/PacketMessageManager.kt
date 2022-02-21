@@ -35,36 +35,65 @@ object PacketMessageManager {
     }
 
     fun packetHandler(client: Client, packet: Packet) {
-        if (packet.packetType == PacketType.COMMAND) {
-            val command = packet.data.get("command").asString
-            if (command.startsWith("/")) {
-                if (!(client.user!!.hasPermission(command.substring(1).split(" ")[0]))) {
-                    val json = JsonObject()
-                    val type = JsonObject()
-                    type.addProperty("text", "Not the permissions!")
-                    type.addProperty("type", "fail")
-                    json.add("info", type)
-                    client.writer.println(Packet(PacketType.INFO, json).createJsonPacket())
-                }
-                Minecraft.instance.server.dispatchCommand(Minecraft.instance.server.consoleSender, command.substring(1))
-                val json = JsonObject()
-                val type = JsonObject()
-                type.addProperty("text", "Command executed!")
-                type.addProperty("type", "success")
-                json.add("info", type)
-                client.writer.println(Packet(PacketType.INFO, json).createJsonPacket())
+        when (packet.packetType) {
+            PacketType.CHAT -> {
+                recieveChat(client, packet)
             }
-        } else if (packet.packetType == PacketType.REFRESH) {
-            refreshPlayers(client)
+            PacketType.COMMAND -> {
+                val command = packet.data.get("command").asString
+                if (command.startsWith("/")) {
+                    println("iojespfoijsf: " + client.user)
+                    if (!(client.user!!.hasPermission(command.substring(1).split(" ")[0]))) {
+                        val json = JsonObject()
+                        val type = JsonObject()
+                        type.addProperty("text", "Not the permissions!")
+                        type.addProperty("type", "fail")
+                        json.add("info", type)
+                        client.writer.println(Packet(PacketType.INFO, json).createJsonPacket())
+                    }
+                    Bukkit.getScheduler().runTask(Minecraft.instance, Runnable {
+                        Minecraft.instance.server.dispatchCommand(Minecraft.instance.server.consoleSender, command.substring(1))
+                    })
+                    sendSuccess(client)
+                } else {
+                    messageBroadcaster(command, client)
+                }
+
+            }
+
+
+            PacketType.REFRESH -> {
+                refreshPlayers(client, Bukkit.getOnlinePlayers().toTypedArray())
+                sendSuccess(client)
+            }
         }
     }
 
-    fun refreshPlayers(client: Client) {
+    private fun messageBroadcaster(message: String, client: Client) {
+        val message = ChatColor.translateAlternateColorCodes('&', Messages.getMessage("admin-message").replace("%message%", message)) + ""
+        Bukkit.getConsoleSender().sendMessage(message)
+        for (player in Bukkit.getOnlinePlayers()) {
+            player.sendMessage(message)
+        }
+        sendSuccess(client)
+    }
+
+    private fun sendSuccess(client: Client) {
+        val json = JsonObject()
+        val type = JsonObject()
+        type.addProperty("text", "Command was successfully executed!")
+        type.addProperty("type", "success")
+        type.addProperty("title", "Command executed!")
+        json.add("info", type)
+        client.writer.println(Packet(PacketType.INFO, json).createJsonPacket())
+    }
+
+    fun refreshPlayers(client: Client, playersBukkit: Array<org.bukkit.entity.Player>) {
         val json = JsonObject()
         json.addProperty("action", "refreshPlayers")
         val players = mutableListOf<Player>()
-        for (player in Minecraft.instance.server.onlinePlayers) {
-            val p = Player(player.name, player.health.toInt(), player.foodLevel, Coordinates(player.location.x.toInt(), player.location.y.toInt(), player.location.z.toInt()), player.world.name)
+        for (player in playersBukkit) {
+            val p = Player(player.name, player.health.toInt(), player.foodLevel, Coordinates(player.location.x.toInt(), player.location.y.toInt(), player.location.z.toInt()), player.world.name, player.gameMode.name, level = player.level, ping = player.ping)
             players.add(p)
         }
         json.add("players", Gson().toJsonTree(players))
@@ -73,7 +102,7 @@ object PacketMessageManager {
     }
 
     fun disconnect(client: Client) {
-        Minecraft.server.loggedInUsers.remove(client.user)
+        Minecraft.server.loggedInClients.remove(client)
         client.socket.close()
         Bukkit.getConsoleSender().sendMessage(ChatColor.translateAlternateColorCodes('&', Messages.getMessage("client-disconnected").replace("%username%", client.name ?: "unknown")))
     }
@@ -97,5 +126,10 @@ object PacketMessageManager {
         val json = JsonObject()
         json.addProperty("magic", Minecraft.server.loginCode)
         client.writer.println(Packet(PacketType.LOGIN, json).createJsonPacket())
+    }
+
+    fun recieveChat(client: Client, packet: Packet) {
+        val chat = packet.data.get("chat").asString
+        messageBroadcaster(chat, client)
     }
 }

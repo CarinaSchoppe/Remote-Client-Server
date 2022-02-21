@@ -13,7 +13,6 @@ package me.carinasophie.util
 
 import com.google.gson.Gson
 import com.google.gson.JsonObject
-import me.carinasophie.server.Client
 
 enum class PacketType(val code: String) {
     INFO("info"),
@@ -30,9 +29,6 @@ enum class PacketType(val code: String) {
 
 class Packet(val packetType: PacketType, val data: JsonObject) {
     companion object {
-        fun send(client: Client, type: PacketType, contents: JsonObject) {
-            client.writer.println(Packet(type, contents).createJsonPacket())
-        }
 
         fun fromJson(input: String): Packet {
             val json = Gson().fromJson(input, JsonObject::class.java)
