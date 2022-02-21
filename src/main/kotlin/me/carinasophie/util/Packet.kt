@@ -26,8 +26,6 @@ enum class PacketType(val code: String) {
 }
 
 
-
-
 class Packet(val packetType: PacketType, val data: JsonObject) {
     companion object {
         fun send(client: Client, type: PacketType, contents: JsonObject) {
