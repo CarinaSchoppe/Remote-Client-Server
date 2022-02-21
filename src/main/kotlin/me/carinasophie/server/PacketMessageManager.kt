@@ -60,11 +60,8 @@ object PacketMessageManager {
                 }
 
             }
-
-
             PacketType.REFRESH -> {
                 refreshPlayers(client, Bukkit.getOnlinePlayers().toTypedArray())
-                sendSuccess(client)
             }
         }
     }
