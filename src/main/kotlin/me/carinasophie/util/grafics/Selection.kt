@@ -93,7 +93,7 @@ class Selection : Initializable {
 
     @FXML
     fun onLogout(event: ActionEvent) {
-
+        System.exit(0)
     }
 
     @FXML
