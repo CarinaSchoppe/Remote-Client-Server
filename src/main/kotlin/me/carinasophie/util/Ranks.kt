@@ -11,14 +11,11 @@
 
 package me.carinasophie.util
 
+import org.bukkit.Bukkit
+import org.bukkit.ChatColor
 import org.bukkit.configuration.file.YamlConfiguration
 
 data class Ranks(val rankName: String, val commands: MutableList<String>) {
-
-/*
-    ADMIN("admin", arrayOf("ban", "kick", "mute", "say", "unmute", "unban", "msg", "sudo")),
-    MODERATOR("moderator", arrayOf("kick", "mute", "say", "unmute", "msg")),
-*/
 
     companion object {
         fun loadRanks(ymlConfig: YamlConfiguration) {
@@ -26,8 +23,9 @@ data class Ranks(val rankName: String, val commands: MutableList<String>) {
                 val commands = ymlConfig.getStringList(key)
                 if (!containsRank(key)) {
                     ranks.add(Ranks(key, commands))
+                    Bukkit.getConsoleSender().sendMessage(ChatColor.translateAlternateColorCodes('&', Messages.getMessage("rank-load").replace("%rank%", key).replace("%commands%", commands.toString())))
                 } else {
-                    println("Rank $key already exists")
+                    Bukkit.getConsoleSender().sendMessage(ChatColor.translateAlternateColorCodes('&', Messages.getMessage("rank-exists").replace("%rank%", key)))
                 }
             }
         }

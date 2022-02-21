@@ -11,22 +11,43 @@
 
 package me.carinasophie.util
 
+import me.carinasophie.Minecraft
 import org.bukkit.configuration.file.YamlConfiguration
 import java.io.File
 
 class Messages {
-    val messagesFile: File = File("plugins/RemoteServerGUI/messages.yml")
-    lateinit var messagesConfig: YamlConfiguration
+    private val messagesFile: File = File("plugins/RemoteServerGUI/messages.yml")
+    var messagesConfig: YamlConfiguration
 
     init {
         messagesConfig = YamlConfiguration.loadConfiguration(messagesFile)
     }
 
+    fun add(): Messages {
+        messageInstance = this
+        return this
+    }
+
     companion object {
-        val messageInstance = Messages()
+        lateinit var messageInstance: Messages
+
+        fun addMessagesDefault(config: YamlConfiguration) {
+            config.addDefault("register-user", "&7[&a+&7] &aUser &7[&a+&7] &a%username% &7[&a+&7] &ahas been registered with rank &7[&a+&7] &a%rank%")
+            config.addDefault("rank-exists", "&cRank &6%rank% &calready exists!")
+            config.addDefault("rank-load", "&aRank &6%rank% &awith commands: &6%commands% &aloaded!")
+            config.addDefault("server-started", "&aServer started on port &6%port%&a!")
+            config.addDefault("client-connected", "&aA client connected!")
+            config.addDefault("client-disconnected", "&cClient &6%username% &cdisconnected!")
+            config.addDefault("client-sent", "&7Client &6%username% sent: &6%message%&7!")
+            config.addDefault("client-activated", "&aClient activated: &6%username%!")
+            config.addDefault("plugin-enabled", "&7>> &c&lEnabled!")
+            config.addDefault("plugin-disabled", "&7>> &c&lDisabled!")
+            config.options().copyDefaults(true)
+            config.save(messageInstance.messagesFile)
+        }
 
         fun getMessage(key: String): String {
-            return messageInstance.messagesConfig.getString(key) ?: "&cMessage not found"
+            return (Minecraft.prefix + messageInstance.messagesConfig.getString(key))
         }
     }
 }

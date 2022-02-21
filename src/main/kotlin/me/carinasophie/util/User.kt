@@ -12,6 +12,7 @@
 package me.carinasophie.util
 
 import me.carinasophie.Minecraft
+import org.bukkit.Bukkit
 import org.bukkit.ChatColor
 import org.bukkit.configuration.file.YamlConfiguration
 
@@ -39,7 +40,7 @@ class User(val username: String, val password: String, var rank: Ranks) {
             for (key in config.getKeys(false)) {
                 val client = User(config.getString("$key.username")!!, config.getString("$key.password")!!, Ranks.ranks.first { config.getString("$key.rank")!! == it.rankName })
                 users.add(client)
-                println(ChatColor.translateAlternateColorCodes('&', "&7[&a+&7] &aUser &7[&a+&7] &a${client.username} &7[&a+&7] &ahas been registered with rank &7[&a+&7] &a${client.rank.rankName}"))
+                Bukkit.getConsoleSender().sendMessage(ChatColor.translateAlternateColorCodes('&', Messages.getMessage("register-user").replace("%username%", client.username).replace("%rank%", client.rank.rankName)))
             }
         }
 

@@ -13,9 +13,11 @@ package me.carinasophie.server
 
 import com.google.gson.JsonObject
 import me.carinasophie.Minecraft
+import me.carinasophie.util.Messages
 import me.carinasophie.util.Packet
 import me.carinasophie.util.PacketType
 import me.carinasophie.util.User
+import org.bukkit.Bukkit
 import org.bukkit.ChatColor
 import java.io.*
 import java.net.ServerSocket
@@ -58,7 +60,7 @@ class Server(port: Int) {
                     input = client.reader.readLine()
                 } catch (e: Exception) {
                     client.socket.close()
-                    println(ChatColor.translateAlternateColorCodes('&', "&cClient disconnected"))
+                    Bukkit.getConsoleSender().sendMessage(ChatColor.translateAlternateColorCodes('&', Messages.getMessage("client-disconnected").replace("%username%", client.name!!)))
                     return@Thread
                 }
                 if (input == null) {
@@ -67,7 +69,7 @@ class Server(port: Int) {
                     break
                 }
                 val packet = Packet.fromJson(input)
-                if (Minecraft.debug) println(ChatColor.translateAlternateColorCodes('&', "&aClient sent: $input"))
+                if (Minecraft.debug) Bukkit.getConsoleSender().sendMessage(ChatColor.translateAlternateColorCodes('&', Messages.getMessage("client-sent").replace("%username%", client.name!!).replace("%message%", input)))
                 if (!client.activated) {
                     if (packet.packetType == PacketType.LOGIN && packet.data.get("magic").asString.equals(loginCode)) {
                         for (user in User.users) {
@@ -79,7 +81,7 @@ class Server(port: Int) {
                                 client.activated = true
                                 clients.add(user)
                                 client.name = packet.data.getAsJsonObject("login").get("username").asString
-                                println(ChatColor.translateAlternateColorCodes('&', "&aClient activated: ${client.name}"))
+                                Bukkit.getConsoleSender().sendMessage(ChatColor.translateAlternateColorCodes('&', Messages.getMessage("client-activated").replace("%username%", client.name!!)))
                                 PacketMessageManager.loginSuccess(client)
                                 break
                             }

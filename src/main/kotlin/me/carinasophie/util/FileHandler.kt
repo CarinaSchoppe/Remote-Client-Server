@@ -15,7 +15,7 @@ import me.carinasophie.Minecraft
 import org.bukkit.configuration.file.YamlConfiguration
 import java.io.File
 
-class FileHandling {
+class FileHandler {
     private val fileSettings: File = File("plugins/RemoteServerGUI/settings.yml")
     val ymlConfigSettings: YamlConfiguration
     private val fileMessages: File
@@ -26,7 +26,7 @@ class FileHandling {
     val ymlConfigRanks: YamlConfiguration
 
     private fun loadPrefix() {
-        Minecraft.prefix = ymlConfigSettings.getString("prefix")!!
+        Minecraft.prefix = ymlConfigSettings.getString("prefix")!! + " "
     }
 
     init {

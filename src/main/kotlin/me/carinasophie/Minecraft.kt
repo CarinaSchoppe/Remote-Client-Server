@@ -12,7 +12,8 @@
 package me.carinasophie
 
 import me.carinasophie.server.Server
-import me.carinasophie.util.FileHandling
+import me.carinasophie.util.FileHandler
+import me.carinasophie.util.Messages
 import me.carinasophie.util.Ranks
 import me.carinasophie.util.User
 import org.bukkit.Bukkit
@@ -26,24 +27,27 @@ class Minecraft : JavaPlugin() {
         var debug: Boolean = true
         lateinit var instance: Minecraft
         lateinit var prefix: String
-        lateinit var fileHandler: FileHandling
+        lateinit var fileHandler: FileHandler
         lateinit var server: Server
     }
 
 
     override fun onDisable() {
-        println(ChatColor.translateAlternateColorCodes('&', "&c&lKotlinServerMC &7>> &c&lDisabled"))
+        Bukkit.getConsoleSender().sendMessage(ChatColor.translateAlternateColorCodes('&', Messages.getMessage("plugin-disabled")))
+        fileHandler.saveConfigs()
     }
 
     override fun onEnable() {
         instance = this
         init(Bukkit.getPluginManager())
-        println(ChatColor.translateAlternateColorCodes('&', "&c&lKotlinServerMC &7>> &c&lEnabled"))
+        Bukkit.getConsoleSender().sendMessage(ChatColor.translateAlternateColorCodes('&', Messages.getMessage("plugin-enabled")))
 
     }
 
     fun init(pluginManager: PluginManager) {
-        fileHandler = FileHandling()
+        val messages = Messages().add()
+        Messages.addMessagesDefault(messages.messagesConfig)
+        fileHandler = FileHandler()
         User.addUserToConfig(fileHandler.ymlConfigUsers, User("PixelsDE", "pixelsde", Ranks.getRank("ADMIN")!!))
         User.registerUsers(fileHandler.ymlConfigUsers)
         Minecraft.server = Server(fileHandler.ymlConfigSettings.getInt("default-server-port"))
