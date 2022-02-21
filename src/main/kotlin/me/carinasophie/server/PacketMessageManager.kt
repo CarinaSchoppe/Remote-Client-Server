@@ -130,6 +130,10 @@ object PacketMessageManager {
 
     fun recieveChat(client: Client, packet: Packet) {
         val chat = packet.data.get("chat").asString
+        val json = JsonObject()
+        json.addProperty("player", client.name)
+        json.addProperty("message", chat)
+        for (client in Minecraft.server.loggedInClients) client.writer.println(Packet(PacketType.CHAT, json).createJsonPacket())
         messageBroadcaster(chat, client)
     }
 }
