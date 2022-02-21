@@ -18,16 +18,30 @@ import me.carinasophie.util.PacketType
 import org.bukkit.ChatColor
 
 object PacketMessageManager {
+
+
     fun loginInvalid(client: Client) {
         var json = JsonObject()
         json.addProperty("action", "disconnect")
         json.addProperty("message", "Logindata invalid!")
-        val packet = Packet(PacketType.ERROR, json).createJsonPacket()
-        println(packet)
-        client.writer.println(packet)
+        client.writer.println(Packet(PacketType.ERROR, json).createJsonPacket())
+        disconnect(client)
+
+    }
+
+    fun disconnect(client: Client) {
         client.socket.close()
-        Minecraft.server.clients.remove(client)
+        Minecraft.server.clients.remove(client.user)
         println("${ChatColor.translateAlternateColorCodes('&', "&cClient disconnected")}")
+    }
+
+    fun doubleLogin(client: Client) {
+        var json = JsonObject()
+        json.addProperty("action", "disconnect")
+        json.addProperty("message", "Allready logged-in!")
+        println(Packet(PacketType.ERROR, json).createJsonPacket())
+        client.writer.println(Packet(PacketType.ERROR, json).createJsonPacket())
+        disconnect(client)
     }
 
     fun loginSuccess(client: Client) {

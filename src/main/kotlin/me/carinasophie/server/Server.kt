@@ -30,7 +30,7 @@ class Server(port: Int) {
     private val serverSocket: ServerSocket
     lateinit var reader: BufferedReader
     lateinit var writer: PrintWriter
-    val clients: MutableList<Client> = mutableListOf()
+    val clients: MutableList<User> = mutableListOf()
 
     init {
         serverSocket = ServerSocket(port)
@@ -42,7 +42,6 @@ class Server(port: Int) {
                 reader = BufferedReader(InputStreamReader(socket.getInputStream(), StandardCharsets.UTF_8), 16384)
                 writer = PrintWriter(BufferedWriter(OutputStreamWriter(socket.getOutputStream(), StandardCharsets.UTF_8), 16384), true)
                 val client = Client(socket, null, writer, reader, false, null)
-                clients.add(client)
 
                 PacketMessageManager.sendLoginToClient(client)
                 readInput(client)
@@ -64,7 +63,7 @@ class Server(port: Int) {
                 }
                 if (input == null) {
                     client.socket.close()
-                    clients.remove(client)
+                    clients.remove(client.user)
                     break
                 }
                 val packet = Packet.fromJson(input)
@@ -72,8 +71,13 @@ class Server(port: Int) {
                 if (!client.activated) {
                     if (packet.packetType == PacketType.LOGIN && packet.data.get("magic").asString.equals(loginCode)) {
                         for (user in User.users) {
+                            if (user in clients) {
+                                PacketMessageManager.doubleLogin(client)
+                                return@Thread
+                            }
                             if (user.username.equals(packet.data.getAsJsonObject("login").get("username").asString) && user.password.equals(packet.data.getAsJsonObject("login").get("password").asString)) {
                                 client.activated = true
+                                clients.add(user)
                                 client.name = packet.data.getAsJsonObject("login").get("username").asString
                                 println("${ChatColor.translateAlternateColorCodes('&', "&aClient activated: ${client.name}")}")
                                 PacketMessageManager.loginSuccess(client)
