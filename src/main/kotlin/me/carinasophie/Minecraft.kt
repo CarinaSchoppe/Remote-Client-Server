@@ -16,6 +16,8 @@ import me.carinasophie.util.FileHandler
 import me.carinasophie.util.Messages
 import me.carinasophie.util.Ranks
 import me.carinasophie.util.User
+import org.apache.logging.log4j.LogManager
+import org.apache.logging.log4j.core.Logger
 import org.bukkit.Bukkit
 import org.bukkit.ChatColor
 import org.bukkit.plugin.PluginManager
@@ -41,6 +43,10 @@ class Minecraft : JavaPlugin() {
         instance = this
         init(Bukkit.getPluginManager())
         Bukkit.getConsoleSender().sendMessage(ChatColor.translateAlternateColorCodes('&', Messages.getMessage("plugin-enabled")))
+        val logger: Logger = LogManager.getRootLogger() as Logger
+
+        val appender = me.carinasophie.server.minecraft.Logger()
+        logger.addAppender(appender)
 
     }
 

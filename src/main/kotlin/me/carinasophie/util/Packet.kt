@@ -21,6 +21,7 @@ enum class PacketType(val code: String) {
     COMMAND("command"),
     CHAT("chat"),
     ERROR("error"),
+    LOG("log"),
     SUCCESS("success")
 
 }
