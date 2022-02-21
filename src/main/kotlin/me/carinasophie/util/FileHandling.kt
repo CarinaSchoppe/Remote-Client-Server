@@ -15,41 +15,50 @@ import me.carinasophie.Minecraft
 import org.bukkit.configuration.file.YamlConfiguration
 import java.io.File
 
-class FileHandling(fileName: String) {
-    var file: File
-    var ymlConfig: YamlConfiguration
+class FileHandling {
+    private val fileSettings: File
+    val ymlConfigSettings: YamlConfiguration
+    private val fileMessages: File
+    val ymlConfigMessages: YamlConfiguration
+    private val fileUsers: File
+    val ymlConfigUsers: YamlConfiguration
 
     private fun loadPrefix() {
-        Minecraft.prefix = ymlConfig.getString("prefix")!!
+        Minecraft.prefix = ymlConfigSettings.getString("prefix")!!
     }
 
     init {
-        file = File("$fileName.yml")
-        ymlConfig = YamlConfiguration.loadConfiguration(file)
+        fileSettings = File("plugins/RemoteServerGUI/settings.yml")
+        fileMessages = File("plugins/RemoteServerGUI/messages.yml")
+        fileUsers = File("plugins/RemoteServerGUI/users.yml")
+        ymlConfigSettings = YamlConfiguration.loadConfiguration(fileSettings)
+        ymlConfigMessages = YamlConfiguration.loadConfiguration(fileMessages)
+        ymlConfigUsers = YamlConfiguration.loadConfiguration(fileUsers)
         saveDefauts()
         loadPrefix()
-        Minecraft.debug = ymlConfig.getBoolean("debug")
+        Minecraft.debug = ymlConfigSettings.getBoolean("debug")
     }
 
     fun addToConfig(key: String, value: Any) {
-        ymlConfig.set(key, value)
-        saveConfig()
+        ymlConfigSettings.set(key, value)
+        saveConfigs()
     }
 
 
     private fun saveDefauts() {
-        ymlConfig.addDefault("prefix", "&7[&b&lKotlinServerClient&7]")
-        ymlConfig.addDefault("default-language", "en_US")
-        ymlConfig.addDefault("default-server-port", "8080")
-        ymlConfig.addDefault("debug", false)
-
-        ymlConfig.options().copyDefaults(true)
-        saveConfig()
+        ymlConfigSettings.addDefault("prefix", "&7[&b&lKotlinServerClient&7]")
+        ymlConfigSettings.addDefault("default-language", "en_US")
+        ymlConfigSettings.addDefault("default-server-port", 8080)
+        ymlConfigSettings.addDefault("debug", true)
+        ymlConfigSettings.options().copyDefaults(true)
+        saveConfigs()
     }
 
-    private fun saveConfig() {
+    fun saveConfigs() {
         try {
-            ymlConfig.save(file)
+            ymlConfigUsers.save(fileUsers)
+            ymlConfigSettings.save(fileSettings)
+            ymlConfigMessages.save(fileMessages)
         } catch (e: Exception) {
             e.printStackTrace()
         }

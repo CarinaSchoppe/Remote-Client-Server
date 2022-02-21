@@ -1,14 +1,14 @@
-load: "STARTUP"
-name: "KotlinServerClientMC"
-main: "me.carinasophie.Minecraft"
-apiVersion: 1.18
-version: "1.0.0"
-authors: [ "Carina-Sophie Schoppe" ]
-description: "A Kotlin remote server GUI"
+load: STARTUP
+name: KotlinServerClientMC
+main: me.carinasophie.Minecraft
+api-version: 1.18
+version: 1.0.0
+author: Carina-Sophie Schoppe
+description: A Kotlin remote server GUI
 commands:
   test:
-    description: "Test command"
-    permission: "test.command"
-    usage: "just run the command!"
-    default: "test"
-    aliases: [ "t" ]
+    description: Test command
+    permission: test.command
+    usage: just run the command!
+    default: test
+    aliases: [ t ]

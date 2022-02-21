@@ -11,7 +11,10 @@
 
 package me.carinasophie
 
+import me.carinasophie.server.Server
 import me.carinasophie.util.FileHandling
+import me.carinasophie.util.Rank
+import me.carinasophie.util.User
 import org.bukkit.Bukkit
 import org.bukkit.ChatColor
 import org.bukkit.plugin.PluginManager
@@ -20,10 +23,11 @@ import org.bukkit.plugin.java.JavaPlugin
 class Minecraft : JavaPlugin() {
 
     companion object {
-        var debug: Boolean = false
+        var debug: Boolean = true
         lateinit var instance: Minecraft
         lateinit var prefix: String
         lateinit var fileHandler: FileHandling
+        lateinit var server: Server
     }
 
 
@@ -39,7 +43,10 @@ class Minecraft : JavaPlugin() {
     }
 
     fun init(pluginManager: PluginManager) {
-        fileHandler = FileHandling("config")
+        fileHandler = FileHandling()
+        User.addUserToConfig(fileHandler.ymlConfigUsers, User("PixelsDE", "pixelsde", Rank.ADMIN))
+        User.registerUsers(fileHandler.ymlConfigUsers)
+        Minecraft.server = Server(fileHandler.ymlConfigSettings.getInt("default-server-port"))
 
     }
 

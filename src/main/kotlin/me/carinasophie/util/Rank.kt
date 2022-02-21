@@ -11,7 +11,8 @@
 
 package me.carinasophie.util
 
-enum class Ranks {
-    ADMIN,
-    MODERATOR,
+enum class Rank(val code: String, val commands: Array<String>) {
+    ADMIN("admin", arrayOf("ban", "kick", "mute", "say", "unmute", "unban", "msg", "sudo")),
+    MODERATOR("moderator", arrayOf("kick", "mute", "say", "unmute", "msg")),
+
 }

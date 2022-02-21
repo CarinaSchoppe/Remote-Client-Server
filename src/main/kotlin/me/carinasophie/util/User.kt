@@ -11,8 +11,58 @@
 
 package me.carinasophie.util
 
-class User(val username: String, val password: String) {
+import me.carinasophie.Minecraft
+import org.bukkit.ChatColor
+import org.bukkit.configuration.file.YamlConfiguration
+
+class User(val username: String, val password: String, var rank: Rank) {
     override fun toString(): String {
         return "User(username='$username':password='$password')"
     }
+
+    fun hasPermission(command: String): Boolean {
+        return rank.commands.contains(command)
+    }
+
+
+    companion object {
+        fun addUserToConfig(config: YamlConfiguration, user: User) {
+            val users = config.getStringList("users")
+            if (!users.contains(user.username)) users.add(user.username)
+            config.set("users", users)
+            config.set("${user.username}.username", user.username)
+            config.set("${user.username}.password", user.password)
+            config.set("${user.username}.rank", user.rank.toString())
+            Minecraft.fileHandler.saveConfigs()
+        }
+
+        lateinit var users: MutableList<User>
+        fun registerUsers(config: YamlConfiguration) {
+            users = mutableListOf()
+            for (user in config.getList("users")!!) {
+                val userConfig = config.getConfigurationSection("$user")!!
+                val userCommands = mutableListOf<String>()
+                for (rank in Rank.values()) {
+                    if (userConfig.getString("rank")!!.equals(rank.code)) {
+                        userCommands.addAll(rank.commands)
+                        break
+                    }
+                }
+                val client = User(userConfig.getString("username")!!, userConfig.getString("password")!!, Rank.values().first { userConfig.getString("rank")!!.equals(it.name) })
+                println("${ChatColor.translateAlternateColorCodes('&', "&7[&a+&7] &aUser &7[&a+&7] &a${client.username} &7[&a+&7] &ahas been registered with rank &7[&a+&7] &a${client.rank.name}")}")
+                users.add(client)
+            }
+        }
+
+        fun userExists(username: String, password: String): Boolean {
+            for (user in users) {
+                if (user.username == username && user.password == password) {
+                    return true
+                }
+            }
+            return false
+        }
+    }
+
+
 }

@@ -15,6 +15,7 @@ import me.carinasophie.util.grafics.Login
 
 class KotlinServerMC {
     init {
+        println("KotlinServerMC-System started!")
         Login().create()
     }
 }

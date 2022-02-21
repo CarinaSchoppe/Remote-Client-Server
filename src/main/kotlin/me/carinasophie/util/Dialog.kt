@@ -24,7 +24,7 @@ object Dialog {
     }
 
     enum class DialogType(private val alertType: AlertType) {
-        INFO(AlertType.INFORMATION), WARNING(AlertType.WARNING), ERROR(AlertType.ERROR);
+        INFO(AlertType.INFORMATION), ERROR(AlertType.ERROR);
 
         fun toAlertType(): AlertType {
             return alertType

@@ -22,10 +22,16 @@ import javafx.scene.control.PasswordField
 import javafx.scene.control.TextField
 import javafx.scene.layout.AnchorPane
 import javafx.stage.Stage
+import me.carinasophie.client.Client
+import me.carinasophie.util.Dialog
 import java.net.URL
 import java.util.*
 
 class Login : Application() {
+
+    companion object {
+        lateinit var stage: Stage
+    }
 
     @FXML
     private lateinit var resources: ResourceBundle
@@ -53,6 +59,19 @@ class Login : Application() {
 
     @FXML
     fun onLogin(event: ActionEvent) {
+        if (ip.text.isEmpty() || port.text.isEmpty() || username.text.isEmpty() || password.text.isEmpty()) {
+            println("Please fill all fields")
+            Dialog.show("Please fill all fields", "Login-Error", Dialog.DialogType.ERROR)
+            return
+        }
+        try {
+            port.text.toInt()
+        } catch (e: Exception) {
+            Dialog.show("Please enter a valid port", "Port-Error", Dialog.DialogType.ERROR)
+        }
+
+        val client = Client(ip = ip.text, port = port.text.toInt(), name = username.text, password = password.text)
+        client.start()
 
     }
 
@@ -80,8 +99,8 @@ class Login : Application() {
         primaryStage.isResizable = false
         primaryStage.title = "Login"
         primaryStage.scene = Scene(root)
+        stage = primaryStage
         primaryStage.show()
-        print("test")
     }
 
 }

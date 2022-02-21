@@ -15,70 +15,99 @@ import com.google.gson.JsonObject
 import me.carinasophie.Minecraft
 import me.carinasophie.util.Packet
 import me.carinasophie.util.PacketType
+import me.carinasophie.util.User
 import org.bukkit.ChatColor
 import java.io.*
 import java.net.ServerSocket
 import java.net.Socket
 import java.nio.charset.StandardCharsets
 
-data class Client(val socket: Socket, var name: String?, val writer: PrintWriter, val reader: BufferedReader, var activated: Boolean = false)
+data class Client(val socket: Socket, var name: String?, val writer: PrintWriter, val reader: BufferedReader, var activated: Boolean = false, val user: User?)
 
 class Server(port: Int) {
 
     val loginCode = "mc2912"
-    val server: ServerSocket
+    private val serverSocket: ServerSocket
     lateinit var reader: BufferedReader
     lateinit var writer: PrintWriter
     val clients: MutableList<Client> = mutableListOf()
 
     init {
-        server = ServerSocket(port)
+        serverSocket = ServerSocket(port)
         println("${ChatColor.translateAlternateColorCodes('&', "&aServer started on port $port")}")
         Thread {
             while (true) {
-                val socket = server.accept()
-                println("${ChatColor.translateAlternateColorCodes('&', "&aClient connected")}")
+                val socket = serverSocket.accept()
+                println("${ChatColor.translateAlternateColorCodes('&', "&aA client connected")}")
                 reader = BufferedReader(InputStreamReader(socket.getInputStream(), StandardCharsets.UTF_8), 16384)
                 writer = PrintWriter(BufferedWriter(OutputStreamWriter(socket.getOutputStream(), StandardCharsets.UTF_8), 16384), true)
-                val client = Client(socket, null, writer, reader)
+                val client = Client(socket, null, writer, reader, false, null)
                 clients.add(client)
 
-                sendLoginToClient(client)
+                PacketMessageManager.sendLoginToClient(client)
                 readInput(client)
             }
         }.start()
     }
 
-    fun sendLoginToClient(client: Client) {
-        val json = JsonObject()
-        json.addProperty("login", loginCode)
-        client.writer.println(Packet(PacketType.LOGIN, json).createJsonPacket())
-    }
 
-
-    fun readInput(client: Client) {
+    private fun readInput(client: Client) {
         Thread {
             while (true) {
-                val input = client.reader.readLine() ?: break
+                var input: String?
+                try {
+                    input = client.reader.readLine()
+                } catch (e: Exception) {
+                    client.socket.close()
+                    println("${ChatColor.translateAlternateColorCodes('&', "&cClient disconnected")}")
+                    return@Thread
+                }
+                if (input == null) {
+                    client.socket.close()
+                    clients.remove(client)
+                    break
+                }
                 val packet = Packet.fromJson(input)
                 if (Minecraft.debug) println("${ChatColor.translateAlternateColorCodes('&', "&aClient sent: $input")}")
                 if (!client.activated) {
-                    if (packet.packetType == PacketType.LOGIN && packet.data.get("login").equals(loginCode)) {
-                        client.activated = true
-                        client.name = packet.data.get("name").asString
-                        println("${ChatColor.translateAlternateColorCodes('&', "&aClient activated: ${client.name}")}")
+                    if (packet.packetType == PacketType.LOGIN && packet.data.get("magic").asString.equals(loginCode)) {
+                        for (user in User.users) {
+                            if (user.username.equals(packet.data.getAsJsonObject("login").get("username").asString) && user.password.equals(packet.data.getAsJsonObject("login").get("password").asString)) {
+                                client.activated = true
+                                client.name = packet.data.getAsJsonObject("login").get("username").asString
+                                println("${ChatColor.translateAlternateColorCodes('&', "&aClient activated: ${client.name}")}")
+                                PacketMessageManager.loginSuccess(client)
+                                break
+                            }
+                        }
+                        if (!client.activated) {
+                            PacketMessageManager.loginInvalid(client)
+                            return@Thread
+                        }
                     } else {
-                        var json = JsonObject()
-                        json.addProperty("error", "Invalid login")
-                        client.writer.println(Packet(PacketType.LOGIN, json).createJsonPacket())
-                        continue
+                        PacketMessageManager.loginInvalid(client)
+                        return@Thread
                     }
                 }
-                //Hier den Code ausführen!
-                if (client.activated && client.name == null) {
-                    client.name = input
-                    println("${ChatColor.translateAlternateColorCodes('&', "&aClient registered as ${client.name}")}")
-                    continue
+                if (packet.packetType == PacketType.COMMAND) {
+                    val command = packet.data.get("command").asString
+                    if (command.startsWith("/")) {
+                        if (!(client.user!!.hasPermission(command.substring(1).split(" ")[0]))) {
+                            val json = JsonObject()
+                            val type = JsonObject()
+                            type.addProperty("text", "Not the permissions!")
+                            type.addProperty("type", "fail")
+                            json.add("info", type)
+                            client.writer.println(Packet(PacketType.INFO, json).createJsonPacket())
+                        }
+                        Minecraft.instance.server.dispatchCommand(Minecraft.instance.server.consoleSender, command.substring(1))
+                        val json = JsonObject()
+                        val type = JsonObject()
+                        type.addProperty("text", "Command executed!")
+                        type.addProperty("type", "success")
+                        json.add("info", type)
+                        client.writer.println(Packet(PacketType.INFO, json).createJsonPacket())
+                    }
                 }
             }
         }.start()

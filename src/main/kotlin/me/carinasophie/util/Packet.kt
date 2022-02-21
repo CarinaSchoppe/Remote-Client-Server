@@ -18,9 +18,15 @@ import me.carinasophie.server.Client
 enum class PacketType(val code: String) {
     INFO("info"),
     LOGIN("login"),
-    COMMAND("command")
+    COMMAND("command"),
+    CHAT("chat"),
+    ERROR("error"),
+    SUCCESS("success")
 
 }
+
+
+
 
 class Packet(val packetType: PacketType, val data: JsonObject) {
     companion object {
