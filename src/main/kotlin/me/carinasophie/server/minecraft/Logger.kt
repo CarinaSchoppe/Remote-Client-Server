@@ -11,7 +11,10 @@
 
 package me.carinasophie.server.minecraft
 
+import com.google.gson.JsonObject
 import me.carinasophie.Minecraft
+import me.carinasophie.util.Packet
+import me.carinasophie.util.PacketType
 import org.apache.logging.log4j.core.LogEvent
 import org.apache.logging.log4j.core.appender.AbstractAppender
 
@@ -21,9 +24,12 @@ open class Logger : AbstractAppender {
     init {
         start()
     }
-
     override fun append(event: LogEvent) {
         val log = event.toImmutable()
-        println(Minecraft.prefix + log.message.formattedMessage)
+        val json = JsonObject()
+        json.addProperty("log", log.message.formattedMessage)
+        if (Minecraft.server.writer != null) {
+            Minecraft.server.writer!!.println(Packet(PacketType.LOG, json).createJsonPacket())
+        }
     }
 }

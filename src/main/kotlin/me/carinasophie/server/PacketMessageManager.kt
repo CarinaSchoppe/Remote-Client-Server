@@ -31,7 +31,7 @@ object PacketMessageManager {
 
     fun disconnect(client: Client) {
         client.socket.close()
-        Minecraft.server.clients.remove(client.user)
+        Minecraft.server.users.remove(client.user)
         println(ChatColor.translateAlternateColorCodes('&', "&cClient disconnected"))
     }
 

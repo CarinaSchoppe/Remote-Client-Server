@@ -12,9 +12,11 @@
 package me.carinasophie.client
 
 import javafx.application.Platform
+import javafx.stage.Stage
 import me.carinasophie.util.Dialog
 import me.carinasophie.util.Packet
 import me.carinasophie.util.PacketType
+import me.carinasophie.util.grafics.Console
 import me.carinasophie.util.grafics.Login
 
 object PacketInputHandler {
@@ -38,7 +40,16 @@ object PacketInputHandler {
             }
             PacketType.SUCCESS -> {
                 Platform.runLater {
-                    Login.stage.close()
+                    Console().start(Login.stage.scene.window as Stage)
+                }
+                return
+            }
+            PacketType.LOG -> {
+                Platform.runLater {
+                    if (Console.instance != null) {
+                        if (Console.instance!!.consoleWindow != null)
+                            Console.instance!!.consoleWindow.text += packet.data.get("log").asString + "\n"
+                    }
                 }
                 return
             }

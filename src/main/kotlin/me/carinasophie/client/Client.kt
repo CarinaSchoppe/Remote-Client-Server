@@ -48,11 +48,13 @@ class Client(val name: String, val ip: String, val port: Int, val password: Stri
     }
 
     fun start() {
-        instance = this
-        reader = BufferedReader(InputStreamReader(socket.getInputStream(), StandardCharsets.UTF_8), 16384)
-        writer = PrintWriter(OutputStreamWriter(socket.getOutputStream(), StandardCharsets.UTF_8), true)
-        login()
-        read()
+        if (socket.isConnected) {
+            instance = this
+            reader = BufferedReader(InputStreamReader(socket.getInputStream(), StandardCharsets.UTF_8), 16384)
+            writer = PrintWriter(OutputStreamWriter(socket.getOutputStream(), StandardCharsets.UTF_8), true)
+            login()
+            read()
+        }
     }
 
     private fun login() {
