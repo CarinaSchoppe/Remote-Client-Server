@@ -94,7 +94,7 @@ class Login : Application() {
     override fun start(primaryStage: Stage) {
         val loader = FXMLLoader(javaClass.getResource("/grafics/login.fxml"))
         loader.setController(this)
-        var root: Parent = loader.load()
+        val root: Parent = loader.load()
         initialize()
         primaryStage.isResizable = false
         primaryStage.title = "Login"

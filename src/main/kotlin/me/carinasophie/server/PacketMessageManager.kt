@@ -21,7 +21,7 @@ object PacketMessageManager {
 
 
     fun loginInvalid(client: Client) {
-        var json = JsonObject()
+        val json = JsonObject()
         json.addProperty("action", "disconnect")
         json.addProperty("message", "Logindata invalid!")
         client.writer.println(Packet(PacketType.ERROR, json).createJsonPacket())
@@ -32,11 +32,11 @@ object PacketMessageManager {
     fun disconnect(client: Client) {
         client.socket.close()
         Minecraft.server.clients.remove(client.user)
-        println("${ChatColor.translateAlternateColorCodes('&', "&cClient disconnected")}")
+        println(ChatColor.translateAlternateColorCodes('&', "&cClient disconnected"))
     }
 
     fun doubleLogin(client: Client) {
-        var json = JsonObject()
+        val json = JsonObject()
         json.addProperty("action", "disconnect")
         json.addProperty("message", "Allready logged-in!")
         println(Packet(PacketType.ERROR, json).createJsonPacket())

@@ -13,7 +13,7 @@ package me.carinasophie
 
 import me.carinasophie.server.Server
 import me.carinasophie.util.FileHandling
-import me.carinasophie.util.Rank
+import me.carinasophie.util.Ranks
 import me.carinasophie.util.User
 import org.bukkit.Bukkit
 import org.bukkit.ChatColor
@@ -32,19 +32,19 @@ class Minecraft : JavaPlugin() {
 
 
     override fun onDisable() {
-        println("${ChatColor.translateAlternateColorCodes('&', "&c&lKotlinServerMC &7>> &c&lDisabled")}")
+        println(ChatColor.translateAlternateColorCodes('&', "&c&lKotlinServerMC &7>> &c&lDisabled"))
     }
 
     override fun onEnable() {
         instance = this
         init(Bukkit.getPluginManager())
-        println("${ChatColor.translateAlternateColorCodes('&', "&c&lKotlinServerMC &7>> &c&lEnabled")}")
+        println(ChatColor.translateAlternateColorCodes('&', "&c&lKotlinServerMC &7>> &c&lEnabled"))
 
     }
 
     fun init(pluginManager: PluginManager) {
         fileHandler = FileHandling()
-        User.addUserToConfig(fileHandler.ymlConfigUsers, User("PixelsDE", "pixelsde", Rank.ADMIN))
+        User.addUserToConfig(fileHandler.ymlConfigUsers, User("PixelsDE", "pixelsde", Ranks.getRank("ADMIN")!!))
         User.registerUsers(fileHandler.ymlConfigUsers)
         Minecraft.server = Server(fileHandler.ymlConfigSettings.getInt("default-server-port"))
 

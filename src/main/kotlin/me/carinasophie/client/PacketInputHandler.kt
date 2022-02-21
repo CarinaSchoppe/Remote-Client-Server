@@ -21,23 +21,27 @@ object PacketInputHandler {
 
     fun handlePacket(packet: Packet) {
         println("Server has send: ${packet.createJsonPacket()}")
-        if (packet.packetType == PacketType.LOGIN) {
-            if (!packet.data.get("magic").asString.equals("mc2912")) {
-                Platform.runLater { Dialog.show("Wrong Server", "Error", Dialog.DialogType.ERROR) }
-                Client.instance.disconnect()
+        when (packet.packetType) {
+            PacketType.LOGIN -> {
+                if (!packet.data.get("magic").asString.equals("mc2912")) {
+                    Platform.runLater { Dialog.show("Wrong Server", "Error", Dialog.DialogType.ERROR) }
+                    Client.instance.disconnect()
+                }
+                return
             }
-            return
-        } else if (packet.packetType == PacketType.ERROR) {
-            if (packet.data.get("action").asString.equals("disconnect")) {
-                Platform.runLater { Dialog.show(packet.data.get("message").asString, "Error", Dialog.DialogType.ERROR) }
-                Client.instance.disconnect()
+            PacketType.ERROR -> {
+                if (packet.data.get("action").asString.equals("disconnect")) {
+                    Platform.runLater { Dialog.show(packet.data.get("message").asString, "Error", Dialog.DialogType.ERROR) }
+                    Client.instance.disconnect()
+                }
+                return
             }
-            return
-        } else if (packet.packetType == PacketType.SUCCESS) {
-            Platform.runLater {
-                Login.stage.close()
+            PacketType.SUCCESS -> {
+                Platform.runLater {
+                    Login.stage.close()
+                }
+                return
             }
-            return
         }
 
     }

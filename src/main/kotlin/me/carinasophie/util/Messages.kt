@@ -11,4 +11,22 @@
 
 package me.carinasophie.util
 
-class Messages
+import org.bukkit.configuration.file.YamlConfiguration
+import java.io.File
+
+class Messages {
+    val messagesFile: File = File("plugins/RemoteServerGUI/messages.yml")
+    lateinit var messagesConfig: YamlConfiguration
+
+    init {
+        messagesConfig = YamlConfiguration.loadConfiguration(messagesFile)
+    }
+
+    companion object {
+        val messageInstance = Messages()
+
+        fun getMessage(key: String): String {
+            return messageInstance.messagesConfig.getString(key) ?: "&cMessage not found"
+        }
+    }
+}

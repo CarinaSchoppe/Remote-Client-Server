@@ -15,7 +15,7 @@ import me.carinasophie.Minecraft
 import org.bukkit.ChatColor
 import org.bukkit.configuration.file.YamlConfiguration
 
-class User(val username: String, val password: String, var rank: Rank) {
+class User(val username: String, val password: String, var rank: Ranks) {
     override fun toString(): String {
         return "User(username='$username':password='$password')"
     }
@@ -42,14 +42,14 @@ class User(val username: String, val password: String, var rank: Rank) {
             for (user in config.getList("users")!!) {
                 val userConfig = config.getConfigurationSection("$user")!!
                 val userCommands = mutableListOf<String>()
-                for (rank in Rank.values()) {
-                    if (userConfig.getString("rank")!!.equals(rank.code)) {
+                for (rank in Ranks.ranks) {
+                    if (userConfig.getString("rank")!! == rank.rankName) {
                         userCommands.addAll(rank.commands)
                         break
                     }
                 }
-                val client = User(userConfig.getString("username")!!, userConfig.getString("password")!!, Rank.values().first { userConfig.getString("rank")!!.equals(it.name) })
-                println("${ChatColor.translateAlternateColorCodes('&', "&7[&a+&7] &aUser &7[&a+&7] &a${client.username} &7[&a+&7] &ahas been registered with rank &7[&a+&7] &a${client.rank.name}")}")
+                val client = User(userConfig.getString("username")!!, userConfig.getString("password")!!, Ranks.ranks.first { userConfig.getString("rank")!! == it.rankName })
+                println(ChatColor.translateAlternateColorCodes('&', "&7[&a+&7] &aUser &7[&a+&7] &a${client.username} &7[&a+&7] &ahas been registered with rank &7[&a+&7] &a${client.rank.rankName}"))
                 users.add(client)
             }
         }

@@ -34,11 +34,11 @@ class Server(port: Int) {
 
     init {
         serverSocket = ServerSocket(port)
-        println("${ChatColor.translateAlternateColorCodes('&', "&aServer started on port $port")}")
+        println(ChatColor.translateAlternateColorCodes('&', "&aServer started on port $port"))
         Thread {
             while (true) {
                 val socket = serverSocket.accept()
-                println("${ChatColor.translateAlternateColorCodes('&', "&aA client connected")}")
+                println(ChatColor.translateAlternateColorCodes('&', "&aA client connected"))
                 reader = BufferedReader(InputStreamReader(socket.getInputStream(), StandardCharsets.UTF_8), 16384)
                 writer = PrintWriter(BufferedWriter(OutputStreamWriter(socket.getOutputStream(), StandardCharsets.UTF_8), 16384), true)
                 val client = Client(socket, null, writer, reader, false, null)
@@ -58,7 +58,7 @@ class Server(port: Int) {
                     input = client.reader.readLine()
                 } catch (e: Exception) {
                     client.socket.close()
-                    println("${ChatColor.translateAlternateColorCodes('&', "&cClient disconnected")}")
+                    println(ChatColor.translateAlternateColorCodes('&', "&cClient disconnected"))
                     return@Thread
                 }
                 if (input == null) {
@@ -67,7 +67,7 @@ class Server(port: Int) {
                     break
                 }
                 val packet = Packet.fromJson(input)
-                if (Minecraft.debug) println("${ChatColor.translateAlternateColorCodes('&', "&aClient sent: $input")}")
+                if (Minecraft.debug) println(ChatColor.translateAlternateColorCodes('&', "&aClient sent: $input"))
                 if (!client.activated) {
                     if (packet.packetType == PacketType.LOGIN && packet.data.get("magic").asString.equals(loginCode)) {
                         for (user in User.users) {
@@ -75,11 +75,11 @@ class Server(port: Int) {
                                 PacketMessageManager.doubleLogin(client)
                                 return@Thread
                             }
-                            if (user.username.equals(packet.data.getAsJsonObject("login").get("username").asString) && user.password.equals(packet.data.getAsJsonObject("login").get("password").asString)) {
+                            if (user.username == packet.data.getAsJsonObject("login").get("username").asString && user.password == packet.data.getAsJsonObject("login").get("password").asString) {
                                 client.activated = true
                                 clients.add(user)
                                 client.name = packet.data.getAsJsonObject("login").get("username").asString
-                                println("${ChatColor.translateAlternateColorCodes('&', "&aClient activated: ${client.name}")}")
+                                println(ChatColor.translateAlternateColorCodes('&', "&aClient activated: ${client.name}"))
                                 PacketMessageManager.loginSuccess(client)
                                 break
                             }
