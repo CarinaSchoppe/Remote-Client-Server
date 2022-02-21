@@ -23,7 +23,6 @@ data class Ranks(val rankName: String, val commands: MutableList<String>) {
     companion object {
         fun loadRanks(ymlConfig: YamlConfiguration) {
             for (key in ymlConfig.getKeys(false)) {
-                println("key: $key")
                 val commands = ymlConfig.getStringList(key)
                 if (!containsRank(key)) {
                     ranks.add(Ranks(key, commands))
@@ -35,7 +34,6 @@ data class Ranks(val rankName: String, val commands: MutableList<String>) {
 
         val ranks = mutableListOf<Ranks>()
         fun getRank(code: String): Ranks? {
-            println("Ranks: ${ranks.size}") //!!
             return ranks.find { it.rankName == code }
         }
 

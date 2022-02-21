@@ -26,31 +26,20 @@ class User(val username: String, val password: String, var rank: Ranks) {
 
 
     companion object {
+        val users = mutableListOf<User>()
+
         fun addUserToConfig(config: YamlConfiguration, user: User) {
-            val users = config.getStringList("users")
-            if (!users.contains(user.username)) users.add(user.username)
-            config.set("users", users)
             config.set("${user.username}.username", user.username)
             config.set("${user.username}.password", user.password)
-            config.set("${user.username}.rank", user.rank.toString())
+            config.set("${user.username}.rank", user.rank.rankName)
             Minecraft.fileHandler.saveConfigs()
         }
 
-        lateinit var users: MutableList<User>
         fun registerUsers(config: YamlConfiguration) {
-            users = mutableListOf()
-            for (user in config.getList("users")!!) {
-                val userConfig = config.getConfigurationSection("$user")!!
-                val userCommands = mutableListOf<String>()
-                for (rank in Ranks.ranks) {
-                    if (userConfig.getString("rank")!! == rank.rankName) {
-                        userCommands.addAll(rank.commands)
-                        break
-                    }
-                }
-                val client = User(userConfig.getString("username")!!, userConfig.getString("password")!!, Ranks.ranks.first { userConfig.getString("rank")!! == it.rankName })
-                println(ChatColor.translateAlternateColorCodes('&', "&7[&a+&7] &aUser &7[&a+&7] &a${client.username} &7[&a+&7] &ahas been registered with rank &7[&a+&7] &a${client.rank.rankName}"))
+            for (key in config.getKeys(false)) {
+                val client = User(config.getString("$key.username")!!, config.getString("$key.password")!!, Ranks.ranks.first { config.getString("$key.rank")!! == it.rankName })
                 users.add(client)
+                println(ChatColor.translateAlternateColorCodes('&', "&7[&a+&7] &aUser &7[&a+&7] &a${client.username} &7[&a+&7] &ahas been registered with rank &7[&a+&7] &a${client.rank.rankName}"))
             }
         }
 
