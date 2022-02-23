@@ -102,11 +102,12 @@ object PacketMessageManager {
     }
 
     fun disconnect(client: Client) {
-        if (client.socket.isConnected) {
+        if (client.socket != null) {
             val json = JsonObject()
             Minecraft.server.loggedInClients.remove(client)
             client.writer.println(Packet(PacketType.LOGOUT, json).createJsonPacket())
-            client.socket.close()
+            client.socket!!.close()
+            client.socket = null
             Bukkit.getConsoleSender().sendMessage(ChatColor.translateAlternateColorCodes('&', Messages.getMessage("client-disconnected").replace("%username%", client.name ?: "unknown")))
         }
     }

@@ -23,7 +23,7 @@ import java.net.ServerSocket
 import java.net.Socket
 import java.nio.charset.StandardCharsets
 
-data class Client(val socket: Socket, var name: String?, val writer: PrintWriter, val reader: BufferedReader, var activated: Boolean = false, var user: User?)
+data class Client(var socket: Socket?, var name: String?, val writer: PrintWriter, val reader: BufferedReader, var activated: Boolean = false, var user: User?)
 
 class Server(port: Int) {
 
@@ -54,18 +54,24 @@ class Server(port: Int) {
     private fun readInput(client: Client) {
         Thread {
             while (true) {
-                var input: String?
+                var input: String? = null
                 try {
                     input = client.reader.readLine()
                 } catch (e: Exception) {
-                    client.socket.close()
-                    Bukkit.getConsoleSender().sendMessage(ChatColor.translateAlternateColorCodes('&', Messages.getMessage("client-disconnected").replace("%username%", client.name!!)))
+                    if (client.socket != null) {
+                        client.socket!!.close()
+                        Bukkit.getConsoleSender().sendMessage(ChatColor.translateAlternateColorCodes('&', Messages.getMessage("client-disconnected").replace("%username%", client.name!!)))
+                        return@Thread
+                    }
+                }
+                if (client.socket == null) {
+                    loggedInClients.remove(client)
                     return@Thread
                 }
                 if (input == null) {
-                    client.socket.close()
+                    client.socket!!.close()
                     loggedInClients.remove(client)
-                    break
+                    return@Thread
                 }
                 val packet = Packet.fromJson(input)
                 if (Minecraft.debug) Bukkit.getConsoleSender().sendMessage(ChatColor.translateAlternateColorCodes('&', Messages.getMessage("client-sent").replace("%username%", client.name ?: "unknown").replace("%message%", input)))

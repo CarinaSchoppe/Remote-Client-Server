@@ -63,10 +63,16 @@ class Login : Application(), Initializable {
 
     @FXML
     fun onLogin(event: ActionEvent) {
-        if (ip.text.isEmpty() || port.text.isEmpty() || username.text.isEmpty() || password.text.isEmpty()) {
+        if (username.text.isEmpty() || password.text.isEmpty()) {
             println("Please fill all fields")
             Dialog.show("Please fill all fields", "Login-Error", Alert.AlertType.ERROR)
             return
+        }
+        if (ip.text.isEmpty()) {
+            ip.text = "localhost"
+        }
+        if (port.text.isEmpty()) {
+            port.text = "8080"
         }
         try {
             port.text.toInt()
