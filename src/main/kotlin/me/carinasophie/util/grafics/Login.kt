@@ -15,6 +15,7 @@ import javafx.application.Application
 import javafx.event.ActionEvent
 import javafx.fxml.FXML
 import javafx.fxml.FXMLLoader
+import javafx.fxml.Initializable
 import javafx.scene.Parent
 import javafx.scene.Scene
 import javafx.scene.control.Alert
@@ -28,10 +29,12 @@ import me.carinasophie.util.Dialog
 import java.net.URL
 import java.util.*
 
-class Login : Application() {
+class Login : Application(), Initializable {
 
     companion object {
         lateinit var stage: Stage
+        lateinit var instance: Login
+
     }
 
     @FXML
@@ -102,5 +105,10 @@ class Login : Application() {
         stage = primaryStage
         primaryStage.show()
     }
+
+    override fun initialize(location: URL?, resources: ResourceBundle?) {
+        instance = this
+    }
+
 
 }

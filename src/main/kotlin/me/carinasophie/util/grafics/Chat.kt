@@ -73,7 +73,9 @@ class Chat : Initializable {
 
     @FXML
     fun onLogout(event: ActionEvent) {
-        System.exit(0)
+        val primaryStage = (event.source as Node).scene.window as Stage
+        Login.instance.start(primaryStage)
+
     }
 
     @FXML

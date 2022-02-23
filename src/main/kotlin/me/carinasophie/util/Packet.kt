@@ -23,6 +23,7 @@ enum class PacketType(val code: String) {
     LOG("log"),
     SUCCESS("success"),
     REFRESH("refresh"),
+    LOGOUT("logout"),
 
 }
 

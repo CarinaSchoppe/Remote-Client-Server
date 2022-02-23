@@ -36,6 +36,7 @@ class FileHandler {
     private fun saveDefauts() {
         ymlConfigSettings.addDefault("prefix", "&7[&b&lKotlinServerClient&7]")
         ymlConfigSettings.addDefault("default-language", "en_US")
+        ymlConfigSettings.addDefault("multiple-logins", false)
         ymlConfigSettings.addDefault("default-server-port", 8080)
         ymlConfigSettings.addDefault("debug", true)
         ymlConfigRanks.addDefault("ADMIN", arrayOf("ban", "kick", "mute", "say", "unmute", "unban", "msg", "sudo"))

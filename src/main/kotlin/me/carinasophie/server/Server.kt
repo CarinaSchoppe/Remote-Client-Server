@@ -71,10 +71,12 @@ class Server(port: Int) {
                 if (Minecraft.debug) Bukkit.getConsoleSender().sendMessage(ChatColor.translateAlternateColorCodes('&', Messages.getMessage("client-sent").replace("%username%", client.name ?: "unknown").replace("%message%", input)))
                 if (!client.activated) {
                     if (packet.packetType == PacketType.LOGIN && packet.data.get("magic").asString.equals(loginCode)) {
-                        for (userClient in loggedInClients) {
-                            if (userClient.user!!.username == packet.data.getAsJsonObject("login").get("username").asString) {
-                                PacketMessageManager.doubleLogin(client)
-                                return@Thread
+                        if (Minecraft.fileHandler.ymlConfigSettings.getBoolean("multiple-logins")) {
+                            for (userClient in loggedInClients) {
+                                if (userClient.user!!.username == packet.data.getAsJsonObject("login").get("username").asString) {
+                                    PacketMessageManager.doubleLogin(client)
+                                    return@Thread
+                                }
                             }
                         }
                         for (user in User.users) {

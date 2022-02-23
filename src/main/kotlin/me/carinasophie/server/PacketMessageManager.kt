@@ -63,6 +63,9 @@ object PacketMessageManager {
             PacketType.REFRESH -> {
                 refreshPlayers(client, Bukkit.getOnlinePlayers().toTypedArray())
             }
+            PacketType.LOGOUT -> {
+                disconnect(client)
+            }
         }
     }
 
@@ -99,7 +102,9 @@ object PacketMessageManager {
     }
 
     fun disconnect(client: Client) {
+        val json = JsonObject()
         Minecraft.server.loggedInClients.remove(client)
+        client.writer.println(Packet(PacketType.LOGOUT, json).createJsonPacket())
         client.socket.close()
         Bukkit.getConsoleSender().sendMessage(ChatColor.translateAlternateColorCodes('&', Messages.getMessage("client-disconnected").replace("%username%", client.name ?: "unknown")))
     }

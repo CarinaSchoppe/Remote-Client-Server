@@ -36,20 +36,17 @@ object PacketInputHandler {
                     Platform.runLater { Dialog.show("Wrong Server", "Error", Alert.AlertType.ERROR) }
                     Client.instance.disconnect()
                 }
-                return
             }
             PacketType.ERROR -> {
                 if (packet.data.get("action").asString.equals("disconnect")) {
                     Platform.runLater { Dialog.show(packet.data.get("message").asString, "Error", Alert.AlertType.ERROR) }
                     Client.instance.disconnect()
                 }
-                return
             }
             PacketType.SUCCESS -> {
                 Platform.runLater {
                     Console().start(Login.stage.scene.window as Stage)
                 }
-                return
             }
             PacketType.LOG -> {
                 Platform.runLater {
@@ -58,7 +55,6 @@ object PacketInputHandler {
                         Console.instance!!.consoleWindow.text = Console.text
                     }
                 }
-                return
             }
             PacketType.REFRESH -> {
                 Platform.runLater {
@@ -66,7 +62,6 @@ object PacketInputHandler {
                         refresh(packet)
                     }
                 }
-                return
             }
             PacketType.INFO -> {
                 Platform.runLater {
@@ -78,7 +73,6 @@ object PacketInputHandler {
                         Dialog.show(packet.data.get("info").asJsonObject.get("text").asString, packet.data.get("info").asJsonObject.get("title").asString, Alert.AlertType.WARNING)
 
                 }
-                return
             }
 
             PacketType.CHAT -> {
@@ -88,7 +82,9 @@ object PacketInputHandler {
                         Chat.instance.consoleWindow.text = Chat.text
                     }
                 }
-                return
+            }
+            PacketType.LOGOUT -> {
+                Client.instance.disconnect()
             }
         }
 

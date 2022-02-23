@@ -44,6 +44,11 @@ class Client(private val name: String, private val ip: String, private val port:
         }
     }
 
+    fun logout() {
+        val json = JsonObject()
+        writer.println(Packet(PacketType.LOGOUT, json).createJsonPacket())
+    }
+
     fun disconnect() {
         socket!!.close()
         println("Client \"$name\" disconnected from $ip:$port")
