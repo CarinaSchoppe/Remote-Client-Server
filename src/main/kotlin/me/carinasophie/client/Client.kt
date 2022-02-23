@@ -50,8 +50,10 @@ class Client(private val name: String, private val ip: String, private val port:
     }
 
     fun disconnect() {
-        socket!!.close()
-        println("Client \"$name\" disconnected from $ip:$port")
+        if (socket!!.isConnected) {
+            socket!!.close()
+            println("Client \"$name\" disconnected from $ip:$port")
+        }
     }
 
     fun start() {

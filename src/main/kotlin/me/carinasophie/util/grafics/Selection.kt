@@ -114,6 +114,7 @@ class Selection : Initializable {
 
     @FXML
     fun onLogout(event: ActionEvent) {
+        Client.instance.logout()
         val primaryStage = (event.source as Node).scene.window as Stage
         Login.instance.start(primaryStage)
     }
