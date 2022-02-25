@@ -42,6 +42,6 @@ class Packet(val packetType: PacketType, val data: JsonObject) {
         val json = JsonObject()
         json.addProperty("type", packetType.code)
         json.add("data", data)
-        return json.toString()
+        return Encoder.encode(json.toString())
     }
 }

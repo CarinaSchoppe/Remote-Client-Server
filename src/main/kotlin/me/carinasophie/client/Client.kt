@@ -14,6 +14,7 @@ package me.carinasophie.client
 import com.google.gson.JsonObject
 import javafx.scene.control.Alert
 import me.carinasophie.util.Dialog
+import me.carinasophie.util.Encoder
 import me.carinasophie.util.Packet
 import me.carinasophie.util.PacketType
 import java.io.BufferedReader
@@ -85,7 +86,7 @@ class Client(private val name: String, private val ip: String, private val port:
             while (true) {
                 var input: String?
                 try {
-                    input = reader.readLine()
+                    input = Encoder.decode(reader.readLine())
                 } catch (e: Exception) {
                     disconnect()
                     return@Thread

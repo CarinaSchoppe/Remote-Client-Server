@@ -12,10 +12,7 @@
 package me.carinasophie.server
 
 import me.carinasophie.Minecraft
-import me.carinasophie.util.Messages
-import me.carinasophie.util.Packet
-import me.carinasophie.util.PacketType
-import me.carinasophie.util.User
+import me.carinasophie.util.*
 import org.bukkit.Bukkit
 import org.bukkit.ChatColor
 import java.io.*
@@ -56,7 +53,7 @@ class Server(port: Int) {
             while (true) {
                 var input: String? = null
                 try {
-                    input = client.reader.readLine()
+                    input = Encoder.decode(client.reader.readLine())
                 } catch (e: Exception) {
                     if (client.socket != null) {
                         client.socket!!.close()
