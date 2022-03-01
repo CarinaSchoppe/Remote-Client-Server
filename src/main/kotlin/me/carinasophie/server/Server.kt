@@ -57,7 +57,7 @@ class Server(port: Int) {
                 } catch (e: Exception) {
                     if (client.socket != null) {
                         client.socket!!.close()
-                        Bukkit.getConsoleSender().sendMessage(ChatColor.translateAlternateColorCodes('&', Messages.getMessage("client-disconnected").replace("%username%", client.name!!)))
+                        Bukkit.getConsoleSender().sendMessage(ChatColor.translateAlternateColorCodes('&', Messages.getMessage("client-disconnected").replace("%username%", client.name ?: "Unknown")))
                         return@Thread
                     }
                 }

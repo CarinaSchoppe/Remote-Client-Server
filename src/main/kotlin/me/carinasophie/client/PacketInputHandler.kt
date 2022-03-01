@@ -29,7 +29,6 @@ import me.carinasophie.util.grafics.Selection
 object PacketInputHandler {
 
     fun handlePacket(packet: Packet) {
-        println("Server has send: ${packet.createJsonPacket()}")
         when (packet.packetType) {
             PacketType.LOGIN -> {
                 if (!packet.data.get("magic").asString.equals(Client.instance.magicCode)) {

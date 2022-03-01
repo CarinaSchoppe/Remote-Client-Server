@@ -24,5 +24,4 @@ object Encoder {
         return String(Base64.getDecoder().decode(input))
     }
 
-
 }
