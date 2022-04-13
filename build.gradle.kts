@@ -12,7 +12,7 @@
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
-    kotlin("jvm") version "1.6.10"
+    kotlin("jvm") version "1.6.20"
     application
     java
     id("xyz.jpenilla.run-paper") version "1.0.6"
@@ -20,7 +20,7 @@ plugins {
     id("org.openjfx.javafxplugin") version "0.0.10"
 }
 
-description = "A plugin so that you can remotly use a GUI to connect to your server"
+description = "A plugin so that you can remotely use a GUI to connect to your server"
 group = "me.carina"
 version = "1.0.0"
 
@@ -30,9 +30,10 @@ repositories {
 }
 
 dependencies {
-    annotationProcessor("org.apache.logging.log4j:log4j-core:2.17.1")
+    implementation("io.netty:netty-all:4.1.75.Final")
+    annotationProcessor("org.apache.logging.log4j:log4j-core:2.17.2")
     implementation("org.apache.logging.log4j:log4j-core:2.17.1")
-    implementation("org.apache.logging.log4j:log4j-api:2.17.1")
+    implementation("org.apache.logging.log4j:log4j-api:2.17.2")
     implementation("com.google.code.gson:gson:2.9.0")
     compileOnly("io.papermc.paper:paper-api:1.18.1-R0.1-SNAPSHOT")
     testImplementation(kotlin("test"))
