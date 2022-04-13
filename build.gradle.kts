@@ -32,7 +32,7 @@ repositories {
 dependencies {
     implementation("io.netty:netty-all:4.1.75.Final")
     annotationProcessor("org.apache.logging.log4j:log4j-core:2.17.2")
-    implementation("org.apache.logging.log4j:log4j-core:2.17.1")
+    implementation("org.apache.logging.log4j:log4j-core:2.17.2")
     implementation("org.apache.logging.log4j:log4j-api:2.17.2")
     implementation("com.google.code.gson:gson:2.9.0")
     compileOnly("io.papermc.paper:paper-api:1.18.1-R0.1-SNAPSHOT")
@@ -41,10 +41,6 @@ dependencies {
 
 java {
     toolchain.languageVersion.set(JavaLanguageVersion.of(17))
-}
-
-tasks.test {
-    useJUnitPlatform()
 }
 
 
@@ -56,6 +52,19 @@ javafx {
 tasks {
     runServer {
         minecraftVersion("1.18")
+    }
+    compileJava {
+        options.encoding = Charsets.UTF_8.name() // We want UTF-8 for everything
+        options.release.set(17)
+    }
+    javadoc {
+        options.encoding = Charsets.UTF_8.name() // We want UTF-8 for everything
+    }
+    processResources {
+        filteringCharset = Charsets.UTF_8.name() // We want UTF-8 for everything
+    }
+    test {
+        useJUnitPlatform()
     }
 }
 
