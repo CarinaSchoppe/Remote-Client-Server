@@ -28,7 +28,7 @@ class Server(port: Int) {
     private val serverSocket: ServerSocket
     private lateinit var reader: BufferedReader
     private var writer: PrintWriter? = null
-    val loggedInClients: MutableList<Client> = mutableListOf()
+    val loggedInClients: MutableSet<Client> = mutableSetOf()
 
     init {
         serverSocket = ServerSocket(port)
@@ -46,6 +46,7 @@ class Server(port: Int) {
             }
         }.start()
     }
+
 
 
     private fun readInput(client: Client) {
@@ -76,7 +77,7 @@ class Server(port: Int) {
                     if (packet.packetType == PacketType.LOGIN && packet.data.get("magic").asString.equals(loginCode)) {
                         if (!Minecraft.fileHandler.ymlConfigSettings.getBoolean("multiple-logins")) {
                             for (userClient in loggedInClients) {
-                                if (userClient.user!!.username == packet.data.getAsJsonObject("login").get("username").asString) {
+                                if (userClient.user!!.username.equals(packet.data.getAsJsonObject("login").get("username").asString)) {
                                     PacketMessageManager.doubleLogin(client)
                                     return@Thread
                                 }

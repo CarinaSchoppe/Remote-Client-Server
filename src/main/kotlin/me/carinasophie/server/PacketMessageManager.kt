@@ -102,21 +102,18 @@ object PacketMessageManager {
     }
 
     fun disconnect(client: Client) {
-        if (client.socket != null) {
-            val json = JsonObject()
-            Minecraft.server.loggedInClients.remove(client)
-            client.writer.println(Packet(PacketType.LOGOUT, json).createJsonPacket())
-            client.socket!!.close()
-            client.socket = null
-            Bukkit.getConsoleSender().sendMessage(ChatColor.translateAlternateColorCodes('&', Messages.getMessage("client-disconnected").replace("%username%", client.name ?: "unknown")))
-        }
+        val json = JsonObject()
+        Minecraft.server.loggedInClients.remove(client)
+        client.writer.println(Packet(PacketType.LOGOUT, json).createJsonPacket())
+        client.socket!!.close()
+        client.socket = null
+        Bukkit.getConsoleSender().sendMessage(ChatColor.translateAlternateColorCodes('&', Messages.getMessage("client-disconnected").replace("%username%", client.name ?: "unknown")))
     }
 
     fun doubleLogin(client: Client) {
         val json = JsonObject()
         json.addProperty("action", "disconnect")
         json.addProperty("message", "Allready logged-in!")
-        println(Packet(PacketType.ERROR, json).createJsonPacket())
         client.writer.println(Packet(PacketType.ERROR, json).createJsonPacket())
         disconnect(client)
     }
