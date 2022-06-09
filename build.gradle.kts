@@ -12,12 +12,11 @@
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
-    kotlin("jvm") version "1.6.20"
+    kotlin("jvm") version "+"
     application
-    java
-    id("xyz.jpenilla.run-paper") version "1.0.6"
-    id("com.github.johnrengelman.shadow") version "7.1.2"
-    id("org.openjfx.javafxplugin") version "0.0.10"
+    id("xyz.jpenilla.run-paper") version "+"
+    id("com.github.johnrengelman.shadow") version "+"
+    id("org.openjfx.javafxplugin") version "+"
 }
 
 description = "A plugin so that you can remotely use a GUI to connect to your server"
@@ -30,11 +29,11 @@ repositories {
 }
 
 dependencies {
-    annotationProcessor("org.apache.logging.log4j:log4j-core:2.17.2")
-    implementation("org.apache.logging.log4j:log4j-core:2.17.2")
-    implementation("org.apache.logging.log4j:log4j-api:2.17.2")
-    implementation("com.google.code.gson:gson:2.9.0")
-    compileOnly("io.papermc.paper:paper-api:1.18.1-R0.1-SNAPSHOT")
+    annotationProcessor("org.apache.logging.log4j:log4j-core:+")
+    implementation("org.apache.logging.log4j:log4j-core:+")
+    implementation("org.apache.logging.log4j:log4j-api:+")
+    implementation("com.google.code.gson:gson:+")
+    compileOnly("io.papermc.paper:paper-api:+")
     testImplementation(kotlin("test"))
 }
 
@@ -50,7 +49,7 @@ javafx {
 
 tasks {
     runServer {
-        minecraftVersion("1.18")
+        minecraftVersion("1.18.2")
     }
     compileJava {
         options.encoding = Charsets.UTF_8.name() // We want UTF-8 for everything

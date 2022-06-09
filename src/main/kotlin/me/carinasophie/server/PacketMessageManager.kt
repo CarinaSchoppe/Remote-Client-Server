@@ -60,12 +60,16 @@ object PacketMessageManager {
                 }
 
             }
+
             PacketType.REFRESH -> {
                 refreshPlayers(client, Bukkit.getOnlinePlayers().toTypedArray())
             }
+
             PacketType.LOGOUT -> {
                 disconnect(client)
             }
+
+            else -> {}
         }
     }
 

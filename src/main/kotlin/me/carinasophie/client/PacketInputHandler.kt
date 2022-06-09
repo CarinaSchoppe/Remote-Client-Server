@@ -82,9 +82,12 @@ object PacketInputHandler {
                     }
                 }
             }
+
             PacketType.LOGOUT -> {
                 Client.instance.disconnect()
             }
+
+            else -> {}
         }
 
     }
