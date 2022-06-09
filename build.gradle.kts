@@ -13,7 +13,7 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
     kotlin("jvm") version "+"
-    application
+    id("application")
     id("xyz.jpenilla.run-paper") version "+"
     id("com.github.johnrengelman.shadow") version "+"
     id("org.openjfx.javafxplugin") version "+"
@@ -43,8 +43,9 @@ java {
 
 
 javafx {
-    version = "17"
+    version = "+"
     modules("javafx.controls", "javafx.fxml")
+
 }
 
 tasks {
@@ -61,14 +62,22 @@ tasks {
     processResources {
         filteringCharset = Charsets.UTF_8.name() // We want UTF-8 for everything
     }
+    withType<KotlinCompile>{
+        kotlinOptions {
+            freeCompilerArgs = listOf(
+                "-Xuse-k2",
+                "-Xjdk-release=17"
+            )
+            jvmTarget = "17"
+            languageVersion = "1.7"
+        }
+    }
     test {
         useJUnitPlatform()
     }
 }
 
-tasks.withType<KotlinCompile> {
-    kotlinOptions.jvmTarget = "17"
-}
+
 
 
 application {
