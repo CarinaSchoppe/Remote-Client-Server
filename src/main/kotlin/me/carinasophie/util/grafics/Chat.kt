@@ -105,7 +105,6 @@ class Chat : Initializable {
         val loader = FXMLLoader(javaClass.getResource("/grafics/chat.fxml"))
         loader.setController(this)
         val root = loader.load<Any>() as Parent
-        initialize()
         primaryStage.title = "Console"
         primaryStage.isResizable = false
         primaryStage.scene = Scene(root)
@@ -113,18 +112,6 @@ class Chat : Initializable {
         primaryStage.show()
     }
 
-    @FXML
-    fun initialize() {
-        assert(chat != null) { "fx:id=\"command\" was not injected: check your FXML file 'chat.fxml'." }
-        assert(consoleButton != null) { "fx:id=\"consoleButton\" was not injected: check your FXML file 'chat.fxml'." }
-        assert(consoleWindow != null) { "fx:id=\"consoleWindow\" was not injected: check your FXML file 'chat.fxml'." }
-        assert(headText != null) { "fx:id=\"headText\" was not injected: check your FXML file 'chat.fxml'." }
-        assert(logoutButton != null) { "fx:id=\"logoutButton\" was not injected: check your FXML file 'chat.fxml'." }
-        assert(pane != null) { "fx:id=\"pane\" was not injected: check your FXML file 'chat.fxml'." }
-        assert(playerMenuButton != null) { "fx:id=\"playerMenuButton\" was not injected: check your FXML file 'chat.fxml'." }
-        assert(sendButton != null) { "fx:id=\"sendButton\" was not injected: check your FXML file 'chat.fxml'." }
-
-    }
 
     override fun initialize(location: URL?, resources: ResourceBundle?) {
         instance = this

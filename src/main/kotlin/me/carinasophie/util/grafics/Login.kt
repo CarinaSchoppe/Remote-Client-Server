@@ -85,15 +85,6 @@ class Login : Application(), Initializable {
 
     }
 
-    @FXML
-    fun initialize() {
-        assert(ip != null) { "fx:id=\"ip\" was not injected: check your FXML file 'login.fxml'." }
-        assert(loginButton != null) { "fx:id=\"loginButton\" was not injected: check your FXML file 'login.fxml'." }
-        assert(pane != null) { "fx:id=\"pane\" was not injected: check your FXML file 'login.fxml'." }
-        assert(password != null) { "fx:id=\"password\" was not injected: check your FXML file 'login.fxml'." }
-        assert(port != null) { "fx:id=\"port\" was not injected: check your FXML file 'login.fxml'." }
-        assert(username != null) { "fx:id=\"username\" was not injected: check your FXML file 'login.fxml'." }
-    }
 
 
     fun create() = launch()
@@ -104,7 +95,6 @@ class Login : Application(), Initializable {
         val loader = FXMLLoader(javaClass.getResource("/grafics/login.fxml"))
         loader.setController(this)
         val root: Parent = loader.load()
-        initialize()
         primaryStage.isResizable = false
         primaryStage.title = "Login"
         primaryStage.scene = Scene(root)

@@ -103,14 +103,6 @@ class Console : Initializable {
 
     @FXML
     fun initialize() {
-        assert(command != null) { "fx:id=\"command\" was not injected: check your FXML file 'console.fxml'." }
-        assert(consoleWindow != null) { "fx:id=\"consoleWindow\" was not injected: check your FXML file 'console.fxml'." }
-        assert(headText != null) { "fx:id=\"headText\" was not injected: check your FXML file 'console.fxml'." }
-        assert(logoutButton != null) { "fx:id=\"logoutButton\" was not injected: check your FXML file 'console.fxml'." }
-        assert(pane != null) { "fx:id=\"pane\" was not injected: check your FXML file 'console.fxml'." }
-        assert(playerMenuButton != null) { "fx:id=\"playerMenuButton\" was not injected: check your FXML file 'console.fxml'." }
-        assert(sendButton != null) { "fx:id=\"sendButton\" was not injected: check your FXML file 'console.fxml'." }
-        assert(chatButton != null) { "fx:id=\"chatButton\" was not injected: check your FXML file 'chat.fxml'." }
         print("Console initialized")
     }
 

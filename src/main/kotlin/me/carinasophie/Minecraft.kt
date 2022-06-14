@@ -49,7 +49,6 @@ class Minecraft : JavaPlugin() {
 
         val appender = me.carinasophie.server.minecraft.Logger()
         logger.addAppender(appender)
-
     }
 
     private fun init(pluginManager: PluginManager) {

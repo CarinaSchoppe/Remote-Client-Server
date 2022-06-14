@@ -189,7 +189,6 @@ class Selection : Initializable {
         val loader = FXMLLoader(javaClass.getResource("/grafics/selection.fxml"))
         loader.setController(this)
         val root = loader.load<Any>() as Parent
-        initialize()
         primaryStage.title = "Selection"
         primaryStage.isResizable = false
         primaryStage.scene = Scene(root)
@@ -198,27 +197,6 @@ class Selection : Initializable {
         Client.instance.writer.println(Packet(PacketType.REFRESH, json).createJsonPacket())
     }
 
-    @FXML
-    fun initialize() {
-        assert(chatButton != null) { "fx:id=\"chatButton\" was not injected: check your FXML file 'chat.fxml'." }
-        assert(command != null) { "fx:id=\"command\" was not injected: check your FXML file 'selection.fxml'." }
-        assert(consoleButton != null) { "fx:id=\"consoleButton\" was not injected: check your FXML file 'selection.fxml'." }
-        assert(food != null) { "fx:id=\"food\" was not injected: check your FXML file 'selection.fxml'." }
-        assert(gamemode != null) { "fx:id=\"gamemode\" was not injected: check your FXML file 'selection.fxml'." }
-        assert(headText != null) { "fx:id=\"headText\" was not injected: check your FXML file 'selection.fxml'." }
-        assert(health != null) { "fx:id=\"health\" was not injected: check your FXML file 'selection.fxml'." }
-        assert(level != null) { "fx:id=\"level\" was not injected: check your FXML file 'selection.fxml'." }
-        assert(logoutButton != null) { "fx:id=\"logoutButton\" was not injected: check your FXML file 'selection.fxml'." }
-        assert(pane != null) { "fx:id=\"pane\" was not injected: check your FXML file 'selection.fxml'." }
-        assert(ping != null) { "fx:id=\"ping\" was not injected: check your FXML file 'selection.fxml'." }
-        assert(playerCoordinates != null) { "fx:id=\"playerCoordinates\" was not injected: check your FXML file 'selection.fxml'." }
-        assert(reason != null) { "fx:id=\"reason\" was not injected: check your FXML file 'selection.fxml'." }
-        assert(refresh != null) { "fx:id=\"refresh\" was not injected: check your FXML file 'selection.fxml'." }
-        assert(sendButton != null) { "fx:id=\"sendButton\" was not injected: check your FXML file 'selection.fxml'." }
-        assert(table != null) { "fx:id=\"table\" was not injected: check your FXML file 'selection.fxml'." }
-        assert(username != null) { "fx:id=\"username\" was not injected: check your FXML file 'selection.fxml'." }
-        assert(world != null) { "fx:id=\"world\" was not injected: check your FXML file 'selection.fxml'." }
-    }
 
     override fun initialize(location: URL?, resources: ResourceBundle?) {
         instance = this

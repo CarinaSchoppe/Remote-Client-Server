@@ -77,9 +77,7 @@ object PacketInputHandler {
             PacketType.CHAT -> {
                 Platform.runLater {
                     Chat.text += packet.data.get("player").asString + " >> " + packet.data.get("message").asString + "\n"
-                    if (Chat.instance != null) {
-                        Chat.instance.consoleWindow.text = Chat.text
-                    }
+                    Chat.instance.consoleWindow.text = Chat.text
                 }
             }
 

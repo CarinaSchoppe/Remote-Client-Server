@@ -15,6 +15,7 @@ import com.google.gson.Gson
 import com.google.gson.JsonObject
 import me.carinasophie.Minecraft
 import me.carinasophie.server.minecraft.Coordinates
+import me.carinasophie.server.minecraft.Logger
 import me.carinasophie.server.minecraft.Player
 import me.carinasophie.util.Messages
 import me.carinasophie.util.Packet
@@ -28,7 +29,7 @@ object PacketMessageManager {
     fun loginInvalid(client: Client) {
         val json = JsonObject()
         json.addProperty("action", "disconnect")
-        json.addProperty("message", "Logindata invalid!")
+        json.addProperty("message", "Login-data invalid!")
         client.writer.println(Packet(PacketType.ERROR, json).createJsonPacket())
         disconnect(client)
 
@@ -37,8 +38,9 @@ object PacketMessageManager {
     fun packetHandler(client: Client, packet: Packet) {
         when (packet.packetType) {
             PacketType.CHAT -> {
-                recieveChat(client, packet)
+                receiveChat(client, packet)
             }
+
             PacketType.COMMAND -> {
                 val command = packet.data.get("command").asString
                 if (command.startsWith("/")) {
@@ -104,7 +106,7 @@ object PacketMessageManager {
         client.writer.println(Packet(PacketType.REFRESH, json).createJsonPacket())
     }
 
-    fun disconnect(client: Client) {
+    private fun disconnect(client: Client) {
         val json = JsonObject()
         Minecraft.server.loggedInClients.remove(client)
         client.writer.println(Packet(PacketType.LOGOUT, json).createJsonPacket())
@@ -116,15 +118,18 @@ object PacketMessageManager {
     fun doubleLogin(client: Client) {
         val json = JsonObject()
         json.addProperty("action", "disconnect")
-        json.addProperty("message", "Allready logged-in!")
+        json.addProperty("message", "Already logged-in!")
         client.writer.println(Packet(PacketType.ERROR, json).createJsonPacket())
         disconnect(client)
     }
 
     fun loginSuccess(client: Client) {
-        val json = JsonObject()
-        json.addProperty("message", "Logindata valid!")
+        var json = JsonObject()
+        json.addProperty("message", "Login-data valid!")
         client.writer.println(Packet(PacketType.SUCCESS, json).createJsonPacket())
+        json = JsonObject()
+        json.addProperty("log", Logger.text)
+        client.writer.println(Packet(PacketType.LOG, json).createJsonPacket())
     }
 
     fun sendLoginToClient(client: Client) {
@@ -133,7 +138,7 @@ object PacketMessageManager {
         client.writer.println(Packet(PacketType.LOGIN, json).createJsonPacket())
     }
 
-    fun recieveChat(client: Client, packet: Packet) {
+    private fun receiveChat(client: Client, packet: Packet) {
         val chat = packet.data.get("chat").asString
         val json = JsonObject()
         json.addProperty("player", client.name)

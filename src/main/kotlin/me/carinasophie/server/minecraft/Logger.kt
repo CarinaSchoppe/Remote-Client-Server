@@ -18,7 +18,13 @@ import me.carinasophie.util.PacketType
 import org.apache.logging.log4j.core.LogEvent
 import org.apache.logging.log4j.core.appender.AbstractAppender
 
-open class Logger : AbstractAppender {
+
+class Logger : AbstractAppender {
+
+    companion object {
+        var text = """"""
+    }
+
     constructor() : super("KotlinServerClientGUILogger", null, null)
 
     init {
@@ -29,6 +35,7 @@ open class Logger : AbstractAppender {
         val log = event.toImmutable()
         val json = JsonObject()
         json.addProperty("log", log.message.formattedMessage)
+        text += log.message.formattedMessage + "\n"
         for (client in Minecraft.server.loggedInClients) {
             client.writer.println(Packet(PacketType.LOG, json).createJsonPacket())
         }
