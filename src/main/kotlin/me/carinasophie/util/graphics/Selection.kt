@@ -9,7 +9,7 @@
  * requires the express written consent of Carina Sophie Schoppe.
  */
 
-package me.carinasophie.util.grafics
+package me.carinasophie.util.graphics
 
 import com.google.gson.JsonObject
 import javafx.beans.property.SimpleStringProperty

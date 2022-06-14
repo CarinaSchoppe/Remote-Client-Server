@@ -20,10 +20,10 @@ import me.carinasophie.server.minecraft.Player
 import me.carinasophie.util.Dialog
 import me.carinasophie.util.Packet
 import me.carinasophie.util.PacketType
-import me.carinasophie.util.grafics.Chat
-import me.carinasophie.util.grafics.Console
-import me.carinasophie.util.grafics.Login
-import me.carinasophie.util.grafics.Selection
+import me.carinasophie.util.graphics.Chat
+import me.carinasophie.util.graphics.Console
+import me.carinasophie.util.graphics.Login
+import me.carinasophie.util.graphics.Selection
 
 
 object PacketInputHandler {
@@ -36,17 +36,20 @@ object PacketInputHandler {
                     Client.instance.disconnect()
                 }
             }
+
             PacketType.ERROR -> {
                 if (packet.data.get("action").asString.equals("disconnect")) {
                     Platform.runLater { Dialog.show(packet.data.get("message").asString, "Error", Alert.AlertType.ERROR) }
                     Client.instance.disconnect()
                 }
             }
+
             PacketType.SUCCESS -> {
                 Platform.runLater {
                     Console().start(Login.stage.scene.window as Stage)
                 }
             }
+
             PacketType.LOG -> {
                 Platform.runLater {
                     Console.text += packet.data.get("log").asString.replace("§", "&") + "\n"
@@ -55,6 +58,7 @@ object PacketInputHandler {
                     }
                 }
             }
+
             PacketType.REFRESH -> {
                 Platform.runLater {
                     if (Selection.instance != null) {
@@ -62,6 +66,7 @@ object PacketInputHandler {
                     }
                 }
             }
+
             PacketType.INFO -> {
                 Platform.runLater {
                     if (packet.data.get("info").asJsonObject.get("type").asString == "success")
@@ -77,7 +82,19 @@ object PacketInputHandler {
             PacketType.CHAT -> {
                 Platform.runLater {
                     Chat.text += packet.data.get("player").asString + " >> " + packet.data.get("message").asString + "\n"
-                    Chat.instance.consoleWindow.text = Chat.text
+                    if (Chat.instance != null) {
+                        Chat.instance!!.consoleWindow.text = Chat.text
+                    }
+                }
+            }
+
+            PacketType.CHAT_BACKUP -> {
+                Platform.runLater {
+                    if (!packet.data.get("message").asString.equals(""))
+                        Chat.text += packet.data.get("message").asString + "\n"
+                    if (Chat.instance != null) {
+                        Chat.instance!!.consoleWindow.text = Chat.text
+                    }
                 }
             }
 

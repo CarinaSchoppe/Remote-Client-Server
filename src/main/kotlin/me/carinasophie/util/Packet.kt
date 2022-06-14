@@ -24,6 +24,7 @@ enum class PacketType(val code: String) {
     SUCCESS("success"),
     REFRESH("refresh"),
     LOGOUT("logout"),
+    CHAT_BACKUP("chat_backup"),
 
 }
 

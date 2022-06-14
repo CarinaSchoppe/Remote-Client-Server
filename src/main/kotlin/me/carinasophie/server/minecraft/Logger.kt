@@ -22,7 +22,8 @@ import org.apache.logging.log4j.core.appender.AbstractAppender
 class Logger : AbstractAppender {
 
     companion object {
-        var text = """"""
+        var console = """"""
+        var chat = """"""
     }
 
     constructor() : super("KotlinServerClientGUILogger", null, null)
@@ -35,7 +36,7 @@ class Logger : AbstractAppender {
         val log = event.toImmutable()
         val json = JsonObject()
         json.addProperty("log", log.message.formattedMessage)
-        text += log.message.formattedMessage + "\n"
+        console += log.message.formattedMessage + "\n"
         for (client in Minecraft.server.loggedInClients) {
             client.writer.println(Packet(PacketType.LOG, json).createJsonPacket())
         }

@@ -128,8 +128,11 @@ object PacketMessageManager {
         json.addProperty("message", "Login-data valid!")
         client.writer.println(Packet(PacketType.SUCCESS, json).createJsonPacket())
         json = JsonObject()
-        json.addProperty("log", Logger.text)
+        json.addProperty("log", Logger.console)
         client.writer.println(Packet(PacketType.LOG, json).createJsonPacket())
+        json = JsonObject()
+        json.addProperty("message", Logger.chat)
+        client.writer.println(Packet(PacketType.CHAT_BACKUP, json).createJsonPacket())
     }
 
     fun sendLoginToClient(client: Client) {

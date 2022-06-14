@@ -9,7 +9,7 @@
  * requires the express written consent of Carina Sophie Schoppe.
  */
 
-package me.carinasophie.util.grafics
+package me.carinasophie.util.graphics
 
 import javafx.application.Application
 import javafx.event.ActionEvent

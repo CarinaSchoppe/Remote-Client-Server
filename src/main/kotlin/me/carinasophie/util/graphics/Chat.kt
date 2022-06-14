@@ -9,7 +9,7 @@
  * requires the express written consent of Carina Sophie Schoppe.
  */
 
-package me.carinasophie.util.grafics
+package me.carinasophie.util.graphics
 
 import com.google.gson.JsonObject
 import javafx.event.ActionEvent
@@ -97,8 +97,8 @@ class Chat : Initializable {
     }
 
     companion object {
-        lateinit var instance: Chat
-        var text = ""
+        var instance: Chat? = null
+        var text = """"""
     }
 
     fun start(primaryStage: Stage) {

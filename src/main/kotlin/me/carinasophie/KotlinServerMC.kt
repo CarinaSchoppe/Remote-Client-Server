@@ -11,7 +11,7 @@
 
 package me.carinasophie
 
-import me.carinasophie.util.grafics.Login
+import me.carinasophie.util.graphics.Login
 
 class KotlinServerMC {
     init {

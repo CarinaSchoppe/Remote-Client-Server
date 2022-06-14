@@ -14,6 +14,7 @@ package me.carinasophie.server.minecraft.events
 import com.google.gson.JsonObject
 import io.papermc.paper.event.player.AsyncChatEvent
 import me.carinasophie.Minecraft
+import me.carinasophie.server.minecraft.Logger
 import me.carinasophie.util.Packet
 import me.carinasophie.util.PacketType
 import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer
@@ -27,6 +28,7 @@ class PlayerChat : Listener {
         val json = JsonObject()
         json.addProperty("player", event.player.name)
         json.addProperty("message", PlainTextComponentSerializer.plainText().serialize(event.message()))
+        Logger.chat += event.player.name + " >> " + PlainTextComponentSerializer.plainText().serialize(event.message()) + "\n"
         for (client in Minecraft.server.loggedInClients)
             client.writer.println(Packet(PacketType.CHAT, json).createJsonPacket())
 
