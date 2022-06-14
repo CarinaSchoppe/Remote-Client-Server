@@ -1,8 +1,8 @@
 load: STARTUP
 name: KotlinServerClientMC
 main: me.carinasophie.Minecraft
-api-version: 1.18
-version: 1.0.0
+api-version: 1.19
+version: 1.3.8
 author: Carina-Sophie Schoppe
 description: A Kotlin remote server GUI
 commands:
