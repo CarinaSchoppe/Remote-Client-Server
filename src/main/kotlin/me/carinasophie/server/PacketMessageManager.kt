@@ -42,7 +42,6 @@ object PacketMessageManager {
             PacketType.COMMAND -> {
                 val command = packet.data.get("command").asString
                 if (command.startsWith("/")) {
-                    println("iojespfoijsf: " + client.user)
                     if (!(client.user!!.hasPermission(command.substring(1).split(" ")[0]))) {
                         val json = JsonObject()
                         val type = JsonObject()

@@ -44,14 +44,7 @@ class User(val username: String, val password: String, val rank: Ranks) {
             }
         }
 
-        fun userExists(username: String, password: String): Boolean {
-            for (user in users) {
-                if (user.username == username && user.password == password) {
-                    return true
-                }
-            }
-            return false
-        }
+
     }
 
 
