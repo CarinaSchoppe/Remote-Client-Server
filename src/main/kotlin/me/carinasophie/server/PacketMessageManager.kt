@@ -20,6 +20,7 @@ import me.carinasophie.server.minecraft.Player
 import me.carinasophie.util.Messages
 import me.carinasophie.util.Packet
 import me.carinasophie.util.PacketType
+import me.carinasophie.util.graphics.Chat
 import org.bukkit.Bukkit
 import org.bukkit.ChatColor
 
@@ -146,7 +147,8 @@ object PacketMessageManager {
         val json = JsonObject()
         json.addProperty("player", client.name)
         json.addProperty("message", chat)
-        for (client in Minecraft.server.loggedInClients) client.writer.println(Packet(PacketType.CHAT, json).createJsonPacket())
+        Chat.text += chat + "\n"
+        Minecraft.server.loggedInClients.forEach { it.writer.println(Packet(PacketType.CHAT, json).createJsonPacket()) }
         messageBroadcaster(chat, client)
     }
 }
