@@ -108,9 +108,9 @@ object PacketInputHandler {
     }
 
     private fun refresh(packet: Packet) {
-        val myType = object : TypeToken<List<Player>>() {}.type
-        val test = Gson().fromJson<List<Player>>(packet.data.get("players"), myType)
-        Selection.players = test
+        val dataType = object : TypeToken<List<Player>>() {}.type
+        val playersList = Gson().fromJson<List<Player>>(packet.data.get("players"), dataType)
+        Selection.players = playersList
         Selection.instance!!.update()
     }
 
