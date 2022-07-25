@@ -102,8 +102,14 @@ object PacketMessageManager {
             val p = Player(player.name, player.health.toInt(), player.foodLevel, Coordinates(player.location.x.toInt(), player.location.y.toInt(), player.location.z.toInt()), player.world.name, player.gameMode.name, level = player.level, ping = player.ping)
             players.add(p)
         }
-        //TODO: dummy player
+        //TODO: dummy players
         players.add(Player("Server", 0, 0, Coordinates(0, 0, 0), "Server", "SURVIVAL", level = 0, ping = 0))
+        players.add(Player("Carina", 0, 0, Coordinates(0, 0, 0), "Server", "SURVIVAL", level = 0, ping = 0))
+        players.add(Player("Annalena", 0, 0, Coordinates(0, 0, 0), "Server", "SURVIVAL", level = 0, ping = 0))
+
+
+
+
         json.add("players", Gson().toJsonTree(players))
         println(json)
         client.writer.println(Packet(PacketType.REFRESH, json).createJsonPacket())
