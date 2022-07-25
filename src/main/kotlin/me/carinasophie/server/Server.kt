@@ -77,7 +77,7 @@ class Server(port: Int) {
                     if (packet.packetType == PacketType.LOGIN && packet.data.get("magic").asString.equals(loginCode)) {
                         if (!Minecraft.fileHandler.ymlConfigSettings.getBoolean("multiple-logins")) {
                             for (userClient in loggedInClients) {
-                                if (userClient.user!!.username.equals(packet.data.getAsJsonObject("login").get("username").asString)) {
+                                if (userClient.user!!.username == packet.data.getAsJsonObject("login").get("username").asString) {
                                     PacketMessageManager.doubleLogin(client)
                                     return@Thread
                                 }

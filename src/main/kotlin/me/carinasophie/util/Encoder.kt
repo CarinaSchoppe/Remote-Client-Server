@@ -16,8 +16,7 @@ import java.util.*
 object Encoder {
 
     fun encode(input: String): String {
-        val encode = Base64.getEncoder().encodeToString(input.toByteArray())
-        return encode
+        return Base64.getEncoder().encodeToString(input.toByteArray())
     }
 
     fun decode(input: String): String {
