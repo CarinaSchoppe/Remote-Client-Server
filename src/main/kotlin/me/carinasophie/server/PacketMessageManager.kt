@@ -111,7 +111,6 @@ object PacketMessageManager {
 
 
         json.add("players", Gson().toJsonTree(players))
-        println(json)
         client.writer.println(Packet(PacketType.REFRESH, json).createJsonPacket())
     }
 
