@@ -92,7 +92,7 @@ class Chat : Initializable {
             return
         }
         val json = JsonObject()
-        json.addProperty("chat", "${chat.text}")
+        json.addProperty("chat", chat.text)
         Client.instance.writer.println(Packet(PacketType.CHAT, json).createJsonPacket())
     }
 

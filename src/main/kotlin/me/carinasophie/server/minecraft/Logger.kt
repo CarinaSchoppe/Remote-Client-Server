@@ -19,14 +19,12 @@ import org.apache.logging.log4j.core.LogEvent
 import org.apache.logging.log4j.core.appender.AbstractAppender
 
 
-class Logger : AbstractAppender {
+class Logger : AbstractAppender("KotlinServerClientGUILogger", null, null) {
 
     companion object {
         var console = """"""
         var chat = """"""
     }
-
-    constructor() : super("KotlinServerClientGUILogger", null, null)
 
     init {
         start()

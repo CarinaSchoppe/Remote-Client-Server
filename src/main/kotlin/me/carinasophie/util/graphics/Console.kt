@@ -97,7 +97,7 @@ class Console : Initializable {
             return
         }
         val json = JsonObject()
-        json.addProperty("command", "${command.text}")
+        json.addProperty("command", command.text)
         Client.instance.writer.println(Packet(PacketType.COMMAND, json).createJsonPacket())
     }
 
